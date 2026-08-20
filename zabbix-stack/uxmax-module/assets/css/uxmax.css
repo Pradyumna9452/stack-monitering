@@ -1,0 +1,266 @@
+[uxmax-coloring-body] body {
+  background-color: var(--uxmax-body-bgcolor);
+}
+[uxmax-coloring-sidebar] .sidebar {
+  background-color: var(--uxmax-sidebar-bgcolor);
+}
+[uxmax-coloring-sidebar] .menu-main .submenu {
+  background-color: var(--uxmax-sidebar-bgcolor);
+}
+[uxmax-coloring-sidebar] .menu-user .submenu {
+  background-color: var(--uxmax-sidebar-bgcolor);
+}
+[uxmax-coloring-sidebar] .menu-main .submenu .submenu li a {
+  background-color: var(--uxmax-sidebar-bgcolor);
+}
+[uxmax-coloring-sidebar] .menu-main > li.is-expanded > a,
+[uxmax-coloring-sidebar] .menu-main > li.is-expanded > a:focus,
+[uxmax-coloring-sidebar] .menu-main > li > a:hover,
+[uxmax-coloring-sidebar] .menu-main > li > a:focus,
+[uxmax-coloring-sidebar] .menu-main > li.is-selected > a,
+[uxmax-coloring-sidebar] .menu-main .submenu > li.is-selected > a,
+[uxmax-coloring-sidebar] .menu-main .submenu a:hover,
+[uxmax-coloring-sidebar] .menu-main .submenu a:focus {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+[uxmax-coloring-sidebar] .menu-main .submenu a {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+[uxmax-coloring-sidebar] .menu-main .submenu > li:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+[uxmax-coloring-sidebar] .menu-main .submenu .submenu li a:hover,
+[uxmax-coloring-sidebar] .menu-main .submenu .submenu li a:focus {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+[uxmax-coloring-sidebar] .menu-user > li.is-expanded > a,
+[uxmax-coloring-sidebar] .menu-user > li.is-expanded > a:focus,
+[uxmax-coloring-sidebar] .menu-user > li > a:hover,
+[uxmax-coloring-sidebar] .menu-user > li > a:focus,
+[uxmax-coloring-sidebar] .menu-user > li.is-selected > a,
+[uxmax-coloring-sidebar] .menu-user .submenu > li.is-selected > a,
+[uxmax-coloring-sidebar] .menu-user .submenu a:hover,
+[uxmax-coloring-sidebar] .menu-user .submenu a:focus {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+[uxmax-coloring-sidebar] .menu-user .submenu a {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+[uxmax-coloring-sidebar] .menu-user .submenu > li:not(:last-child) {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.4);
+}
+[uxmax-coloring-sidebar] .form-search .search {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: rgba(0, 0, 0, 0.1);
+}
+#uxmax {
+  margin-bottom: 10px;
+}
+#uxmax input[type="color"] {
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  vertical-align: middle;
+  margin-right: 5px;
+  width: 22px;
+  height: 22px;
+  line-height: 22px;
+}
+#uxmax label {
+  pointer-events: initial;
+}
+#uxmax-ace-playground {
+  margin-top: 10px;
+  width: 100%;
+  height: 150px;
+}
+.uxmax-demo-modal {
+  min-width: var(--uxmax-modal-width);
+}
+
+/* Expression syntax highlight — ACE editor */
+.uxmax-expr-ace {
+  position: relative;
+  border: 1px solid var(--color-input-border, #b5b5b5);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.uxmax-expr-readonly {
+  background-color: var(--color-input-bg-disabled, #f5f5f5);
+}
+.uxmax-expr-resize-handle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 16px;
+  height: 16px;
+  cursor: nwse-resize;
+  z-index: 10;
+  background: linear-gradient(135deg, transparent 50%, var(--color-input-border, #b5b5b5) 50%,
+    transparent 55%, var(--color-input-border, #b5b5b5) 70%, transparent 70%);
+}
+.uxmax-expr-ace .ace_support.ace_function { color: #C92A2A !important; }
+.uxmax-expr-ace .ace_variable.ace_parameter { color: #1864AB !important; }
+.uxmax-expr-ace .ace_support.ace_type { color: #2B8A3E !important; }
+.uxmax-expr-ace .ace_constant.ace_numeric { color: #D9480F !important; }
+.uxmax-expr-ace .ace_keyword { color: #862E9C !important; font-weight: bold !important; }
+.uxmax-expr-ace .ace_keyword.ace_operator { color: #0891B2 !important; font-weight: normal !important; }
+.uxmax-expr-ace .ace_string { color: #495057 !important; }
+.uxmax-expr-ace .ace_variable { color: #E67700 !important; }
+.uxmax-expr-ace .ace_paren { font-weight: bold !important; }
+
+/* Hide widget header — hide hidden-header widgets' headers in view mode */
+[uxmax-hide-widget-header] .dashboard:not(.dashboard-is-edit-mode) .dashboard-grid-widget-hidden-header .dashboard-grid-widget-header {
+  display: none;
+}
+
+/* Compact dashboard — remove padding between widgets */
+[uxmax-compact-dashboard] .dashboard-grid-widget-container {
+  padding: 0;
+}
+[uxmax-compact-dashboard] .dashboard-grid-widget-container .dashboard-grid-widget-header {
+  left: 0;
+  right: 0;
+  top: 0;
+}
+
+/* Centre the form footer (Update button) on the page — match the 1000px
+   .uxmax-form-container so the button sits over the form's centre line,
+   not the tabview's (which is offset by the sidebar). */
+.uxmax-form .tfoot-buttons,
+.uxmax-form .form-actions,
+.uxmax-form ul.tfoot-buttons,
+.uxmax-form .tabfilter-buttons {
+  display: flex !important;
+  justify-content: center !important;
+  text-align: center !important;
+  max-width: 1000px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  width: 100% !important;
+}
+
+/* uxMAX configuration form layout — sectioned 3-column grid */
+.uxmax-form-container {
+  display: block;
+  width: 100%;
+  min-width: 1000px;
+  max-width: 1000px;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.uxmax-section {
+  margin: 0;
+}
+.uxmax-section-title {
+  background: rgba(13, 20, 45, 0.2);
+  color: #333;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  padding: 8px 16px;
+  margin: 0;
+  border-top: 1px solid #c8c8c8;
+  border-bottom: 1px solid #c8c8c8;
+}
+.uxmax-section-body {
+  padding: 8px 16px;
+  font-family: inherit;
+}
+.uxmax-section-title,
+.uxmax-form-container,
+.uxmax-section,
+.uxmax-section-body,
+.uxmax-setting-row,
+.uxmax-setting-label,
+.uxmax-setting-field,
+.uxmax-field-desc {
+  font-family: inherit;
+}
+.uxmax-setting-row {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #e3e3e3;
+}
+.uxmax-setting-row:last-child {
+  border-bottom: none;
+}
+.uxmax-setting-label {
+  font-weight: 600;
+  padding-top: 6px;
+}
+.uxmax-setting-field { /* fields and desc stack vertically */ }
+.uxmax-field-desc {
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: #f5f5f5;
+  border-left: 3px solid #b8b8b8;
+  border-radius: 2px;
+  color: #555;
+  font-size: 12px;
+  line-height: 1.55;
+  max-width: 720px;
+  white-space: pre-line;
+}
+.uxmax-field-desc strong {
+  color: #333;
+}
+.uxmax-colortag-rules {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+.uxmax-colortag-rules > table {
+  width: 100%;
+}
+
+/* Custom font row — stack the three cells vertically so the long URL
+   textbox + checkbox don't overflow the field column. Inputs stretch to
+   the full width of the field column. */
+#uxmax-fonts-table {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+}
+#uxmax-fonts-table table {
+  display: block;
+  width: 100%;
+}
+#uxmax-fonts-table tbody,
+#uxmax-fonts-table tfoot {
+  display: block;
+}
+#uxmax-fonts-table .form_row {
+  display: block;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  background: #fafafa;
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+}
+#uxmax-fonts-table .form_row > td {
+  display: block;
+  padding: 4px 0;
+  border: none;
+  background: transparent;
+  width: 100%;
+  box-sizing: border-box;
+}
+#uxmax-fonts-table .form_row > td > div {
+  width: 100%;
+  box-sizing: border-box;
+}
+#uxmax-fonts-table .form_row input[type="text"] {
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+}
+#uxmax-fonts-table .form_row z-select {
+  width: auto !important;
+  min-width: 220px;
+}

@@ -1,0 +1,118 @@
+/* ==========================================================================
+   LOCAL CUSTOMIZATION (not part of upstream uxMAX) — "professional NMS" look
+   Loaded via Module.php getAssets().
+
+   Robust targeting (works on Monitoring > Problems AND the dashboard
+   Problems widget, regardless of which columns are enabled):
+     - a problem row is any .list-table row containing a severity cell
+       (td.disaster-bg / high-bg / average-bg / warning-bg / info-bg / na-bg)
+     - the Problem link = a.link-action[data-menu-popup ... "type":"trigger"]
+   (Host column intentionally left at Zabbix defaults.)
+   ========================================================================== */
+
+/* --- Severity cell: crisper, bolder status label ------------------------- */
+.list-table td.disaster-bg,
+.list-table td.high-bg,
+.list-table td.average-bg,
+.list-table td.warning-bg,
+.list-table td.info-bg,
+.list-table td.na-bg {
+  font-weight: 700;
+  letter-spacing: .2px;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, .18);
+}
+
+/* (Host column styling reverted per request — Host keeps Zabbix defaults.) */
+
+/* --- Problem name link: coloured by the row's severity ------------------- */
+.list-table tr:has(td.disaster-bg) a.link-action[data-menu-popup*='"type":"trigger"'] { color: #d32f2f !important; font-weight: 700; }
+.list-table tr:has(td.high-bg)     a.link-action[data-menu-popup*='"type":"trigger"'] { color: #e64a19 !important; font-weight: 700; }
+.list-table tr:has(td.average-bg)  a.link-action[data-menu-popup*='"type":"trigger"'] { color: #ef6c00 !important; font-weight: 700; }
+.list-table tr:has(td.warning-bg)  a.link-action[data-menu-popup*='"type":"trigger"'] { color: #b28704 !important; font-weight: 700; }
+.list-table tr:has(td.info-bg)     a.link-action[data-menu-popup*='"type":"trigger"'] { color: #1565c0 !important; font-weight: 600; }
+.list-table tr:has(td.na-bg)       a.link-action[data-menu-popup*='"type":"trigger"'] { color: #607d8b !important; font-weight: 600; }
+
+/* --- Row hover accent for a polished console feel ----------------------- */
+.list-table tbody tr:has(td.disaster-bg):hover > td,
+.list-table tbody tr:has(td.high-bg):hover     > td,
+.list-table tbody tr:has(td.average-bg):hover  > td,
+.list-table tbody tr:has(td.warning-bg):hover  > td,
+.list-table tbody tr:has(td.info-bg):hover     > td,
+.list-table tbody tr:has(td.na-bg):hover       > td {
+  background-color: rgba(31, 111, 235, .06);
+}
+
+/* ==========================================================================
+   Dark "NOC" sidebar — full dark theme covering every menu state.
+   Palette: navy #14202e bg, light #c7d2e0 text, white on hover/active,
+   brand blue #1f6feb accent. Uses !important to override the light theme.
+   ========================================================================== */
+.sidebar {
+  background-color: #14202e !important;
+  border-right: 3px solid #1f6feb;
+}
+.sidebar .sidebar-header,
+.sidebar .sidebar-nav,
+.sidebar .nav-main,
+.sidebar .nav-user {
+  background-color: transparent !important;
+}
+
+/* Server name + collapse/expand icon buttons */
+.sidebar .server-name { color: #8ea3bd !important; }
+.sidebar .sidebar-header-buttons .btn-icon,
+.sidebar .sidebar-header-buttons .btn-icon::before { color: #c7d2e0 !important; }
+.sidebar .sidebar-header-buttons .btn-icon:hover::before { color: #ffffff !important; }
+
+/* Top-level + user menu items (icon inherits text colour) */
+.sidebar .menu-main > li > a,
+.sidebar .menu-main > li > a::before,
+.sidebar .menu-user > li > a,
+.sidebar .menu-user > li > a::before {
+  color: #c7d2e0 !important;
+}
+.sidebar .menu-main > li > a:hover,
+.sidebar .menu-main > li > a:hover::before,
+.sidebar .menu-user > li > a:hover,
+.sidebar .menu-user > li > a:hover::before {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, .06) !important;
+}
+
+/* Selected / expanded top-level item: brand accent + left bar */
+.sidebar .menu-main > li.is-selected > a,
+.sidebar .menu-main > li.is-selected > a::before,
+.sidebar .menu-main > li.is-expanded > a,
+.sidebar .menu-main > li.is-expanded > a::before {
+  color: #ffffff !important;
+}
+.sidebar .menu-main > li.is-selected > a {
+  background-color: rgba(31, 111, 235, .18) !important;
+  box-shadow: inset 3px 0 0 0 #1f6feb;
+}
+
+/* Submenu (inline when expanded, flyout when collapsed) */
+.sidebar .submenu {
+  background-color: #0d1825 !important;
+}
+.sidebar .submenu > li > a {
+  color: #aebccd !important;
+}
+.sidebar .submenu > li > a:hover {
+  color: #ffffff !important;
+  background-color: rgba(255, 255, 255, .06) !important;
+}
+.sidebar .submenu > li.is-selected > a {
+  color: #ffffff !important;
+  background-color: rgba(31, 111, 235, .22) !important;
+  box-shadow: inset 3px 0 0 0 #1f6feb;
+}
+
+/* Search box at the foot of the sidebar */
+.sidebar .form-search .search,
+.sidebar .search input {
+  background-color: #0d1825 !important;
+  color: #c7d2e0 !important;
+  border-color: rgba(255, 255, 255, .12) !important;
+}
+.sidebar .js-search::before { color: #c7d2e0 !important; }

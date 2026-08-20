@@ -1,0 +1,76 @@
+module:
+  name: uxMAX
+menu:
+  uxmax-configuration: 'Paramètres UI'
+  uxmax-user-preferences: Mon uxMAX
+tabs:
+  general: Général
+form:
+  section:
+    dashboards: Tableaux de bord
+    interface: Comportement de l'UI
+    appearance: Apparence
+    color-tags: Tags de couleur
+    syntax-highlighting: Coloration syntaxique
+  enable-dragging-of-modal-windows: Fenêtres modales déplaçables
+  latest-show-disabled-items: Afficher les éléments désactivés dans Latest data
+  hide-widget-header: Masquer l'en-tête du widget hors du mode édition
+  compact-dashboard: Tableau de bord compact
+  allow-user-override: Autoriser les règles de tags de couleur par utilisateur
+  custom-color-theme: Thème de couleurs personnalisé
+  body-background-color: Couleur de fond de la page
+  navigation-background-color: Couleur de fond de la barre latérale
+  modal-window-minimal-width:
+    label: Largeur minimale des fenêtres modales
+    button:
+      open: Ouvrir
+  custom-font:
+    label: Police personnalisée
+    button:
+      add: Ajouter
+      remove: Supprimer
+    variant:
+      use-external-css: Utiliser un CSS externe
+      upload-font-file: Téléverser un fichier de police
+      google-font-url: URL Google Font
+    hint:
+      store-font-locally: Stocker la police localement
+      supported-formats: 'Formats pris en charge : woff, woff2, ttf, otf, eot'
+  color-tags:
+    label: Tags de couleur
+    table:
+      match: Correspondance
+      string: Chaîne
+    button:
+      add: Ajouter
+      remove: Supprimer
+    match:
+      starts-with: Commence par
+      contains: Contient
+      ends-with: Se termine par
+    value: Valeur
+  syntax-highlight:
+    label: Coloration syntaxique
+    js: JavaScript (script items, preprocessing)
+    expression: Expressions (déclencheurs, éléments calculés)
+  user:
+    section:
+      global-rules: Règles globales de tags de couleur
+      my-overrides: Mes surcharges
+    override-colortags: Utiliser mes propres règles de couleur de tags
+    load-global: Charger les paramètres globaux
+    no-global-rules: Aucune règle globale définie.
+    collision-info: 'Une ligne avec la même Correspondance + Chaîne qu''une règle globale en remplace la couleur. Les lignes avec de nouvelles combinaisons Correspondance + Chaîne s''ajoutent aux règles globales.'
+  button:
+    update: Mettre à jour
+hints:
+  windrag: 'Permet de déplacer les boîtes de dialogue modales en les saisissant par leur barre de titre avec la souris. Destiné principalement à Zabbix 7.0, qui ne prend pas en charge cette fonction de manière native — Zabbix 7.4 propose déjà le déplacement des modales en natif.'
+  latest-show-disabled: 'Affiche les éléments désactivés dans Monitoring → Latest data. Les lignes des éléments désactivés apparaissent en grisé avec une icône ''D'' dans la colonne Info.'
+  hide-widget-header: 'Pour les widgets dont l''option „Show header" est décochée, l''en-tête est entièrement masqué — il n''apparaît pas non plus au survol de la souris. L''en-tête ne réapparaît qu''en passant le tableau de bord en mode édition.'
+  compact-dashboard: 'Supprime les marges autour des widgets pour qu''ils soient collés les uns aux autres. Économise de la place sur les tableaux de bord chargés et offre un rendu plus compact.'
+  color-theme: 'Couleur de fond personnalisée pour la page et/ou la barre latérale. Utile pour distinguer visuellement plusieurs instances Zabbix d''un coup d''œil.'
+  modal-width: 'Définit une largeur minimale en pixels pour les boîtes de dialogue modales. Utile lorsque la taille par défaut est trop étroite pour le contenu de la boîte.'
+  custom-font: "Charge une police personnalisée (via URL Google Fonts ou fichier de police téléversé) et l'applique à toute l'interface Zabbix.\nExemple d'URL : https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap"
+  color-tags: 'Les tags de toute l''interface sont colorés selon vos règles — plus faciles à identifier d''un coup d''œil.'
+  syntax-highlight: 'Coloration syntaxique pour les scripts JavaScript (éléments de script, prétraitement) et les expressions Zabbix (déclencheurs, éléments calculés) dans les éditeurs.'
+  allow-user-override: 'Lorsque activé, les utilisateurs peuvent définir dans My uxMAX leurs propres règles de couleurs de tags, appliquées par-dessus les règles globales. Lorsque désactivé, seules les règles globales s''appliquent et le menu My uxMAX est masqué pour les utilisateurs.'

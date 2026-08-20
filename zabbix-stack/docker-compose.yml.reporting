@@ -1,0 +1,19 @@
+
+# Replace the existing reporting-portal service with:
+  reporting-portal:
+    image: python:3.11-slim
+    container_name: reporting-portal
+    command: >
+      sh -c "pip install --no-cache-dir -r /app/requirements.txt && 
+             cd /app && python app.py"
+    environment:
+      - ZABBIX_URL=http://zabbix-web:8080/api_jsonrpc.php
+      - ZABBIX_USER=Admin
+      - ZABBIX_PASSWORD=zabbix
+    volumes:
+      - ./reporting-portal:/app:ro
+    networks:
+      - zabbix-net
+    depends_on:
+      - zabbix-web
+    restart: unless-stopped

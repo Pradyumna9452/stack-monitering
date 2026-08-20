@@ -1,0 +1,2008 @@
+# Ingestion relabeling for VictoriaMetrics (-relabelConfig).
+# AUTO-GENERATED from live Zabbix host.get (host, groups, tags, interface IP).
+# Adds host_groups / host_type / site / role / host_ip labels to native-connector
+# metrics, keyed on the Zabbix technical host name (`host`). Single ingestion path.
+# Regenerate after host/group/tag/IP changes.
+
+# NOTE: switch port alias (ifAlias) is ALREADY available as the `tag_description`
+# label (Zabbix interface item tag "description" = {#IFALIAS}, exported by the
+# native connector). VM -relabelConfig cannot rename it: the connector adds
+# tag-derived labels AFTER relabeling runs, so they are invisible here. To expose
+# it as `tag_ifalias` instead, rename that item-prototype tag in the switch
+# templates (Zabbix side), not here.
+
+# AIHOSTSERVER
+- source_labels: [host]
+  regex: 'AIHOSTSERVER'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'AIHOSTSERVER'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'AIHOSTSERVER'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'AIHOSTSERVER'
+  target_label: role
+  replacement: 'Hypervisor'
+- source_labels: [host]
+  regex: 'AIHOSTSERVER'
+  target_label: host_ip
+  replacement: '10.95.0.20'
+# ARCBKP2
+- source_labels: [host]
+  regex: 'ARCBKP2'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'ARCBKP2'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'ARCBKP2'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'ARCBKP2'
+  target_label: role
+  replacement: 'Backup'
+- source_labels: [host]
+  regex: 'ARCBKP2'
+  target_label: host_ip
+  replacement: '10.95.0.63'
+# COPA
+- source_labels: [host]
+  regex: 'COPA'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'COPA'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'COPA'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'COPA'
+  target_label: role
+  replacement: 'App-Server'
+- source_labels: [host]
+  regex: 'COPA'
+  target_label: host_ip
+  replacement: '10.95.0.41'
+# COPA-PRD
+- source_labels: [host]
+  regex: 'COPA-PRD'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'COPA-PRD'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'COPA-PRD'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'COPA-PRD'
+  target_label: role
+  replacement: 'App-Server'
+- source_labels: [host]
+  regex: 'COPA-PRD'
+  target_label: host_ip
+  replacement: '10.95.0.47'
+# Core development Switch Primary
+- source_labels: [host]
+  regex: 'Core development Switch Primary'
+  target_label: host_groups
+  replacement: ',SONIC/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Core development Switch Primary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Core development Switch Primary'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'Core development Switch Primary'
+  target_label: role
+  replacement: 'Core-Switch'
+- source_labels: [host]
+  regex: 'Core development Switch Primary'
+  target_label: host_ip
+  replacement: '10.95.0.204'
+# Core HO VDI Switch Primary
+- source_labels: [host]
+  regex: 'Core HO VDI Switch Primary'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Core HO VDI Switch Primary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Core HO VDI Switch Primary'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Core HO VDI Switch Primary'
+  target_label: role
+  replacement: 'Core-Switch'
+- source_labels: [host]
+  regex: 'Core HO VDI Switch Primary'
+  target_label: host_ip
+  replacement: '10.94.0.15'
+# Core HO VDI Switch Secondary
+- source_labels: [host]
+  regex: 'Core HO VDI Switch Secondary'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Core HO VDI Switch Secondary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Core HO VDI Switch Secondary'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Core HO VDI Switch Secondary'
+  target_label: role
+  replacement: 'Core-Switch'
+- source_labels: [host]
+  regex: 'Core HO VDI Switch Secondary'
+  target_label: host_ip
+  replacement: '10.94.0.16'
+# Dept Core Switch Primary
+- source_labels: [host]
+  regex: 'Dept Core Switch Primary'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Dept Core Switch Primary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Dept Core Switch Primary'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Dept Core Switch Primary'
+  target_label: role
+  replacement: 'Core-Switch'
+- source_labels: [host]
+  regex: 'Dept Core Switch Primary'
+  target_label: host_ip
+  replacement: '10.94.0.240'
+# Dept Core Switch Secondary
+- source_labels: [host]
+  regex: 'Dept Core Switch Secondary'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Dept Core Switch Secondary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Dept Core Switch Secondary'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Dept Core Switch Secondary'
+  target_label: role
+  replacement: 'Core-Switch'
+- source_labels: [host]
+  regex: 'Dept Core Switch Secondary'
+  target_label: host_ip
+  replacement: '10.94.0.241'
+# Dept Switch 01
+- source_labels: [host]
+  regex: 'Dept Switch 01'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Dept Switch 01'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 01'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Dept Switch 01'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 01'
+  target_label: host_ip
+  replacement: '10.94.0.35'
+# Dept Switch 02
+- source_labels: [host]
+  regex: 'Dept Switch 02'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Dept Switch 02'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 02'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Dept Switch 02'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 02'
+  target_label: host_ip
+  replacement: '10.94.0.36'
+# Dept Switch 03
+- source_labels: [host]
+  regex: 'Dept Switch 03'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Dept Switch 03'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 03'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Dept Switch 03'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 03'
+  target_label: host_ip
+  replacement: '10.94.0.37'
+# Dept Switch 04
+- source_labels: [host]
+  regex: 'Dept Switch 04'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Dept Switch 04'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 04'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Dept Switch 04'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 04'
+  target_label: host_ip
+  replacement: '10.94.0.38'
+# Dept Switch 05
+- source_labels: [host]
+  regex: 'Dept Switch 05'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Dept Switch 05'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 05'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Dept Switch 05'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 05'
+  target_label: host_ip
+  replacement: '10.94.0.39'
+# Dept Switch 06
+- source_labels: [host]
+  regex: 'Dept Switch 06'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Dept Switch 06'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 06'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Dept Switch 06'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 06'
+  target_label: host_ip
+  replacement: '10.94.0.40'
+# Dept Switch 07
+- source_labels: [host]
+  regex: 'Dept Switch 07'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Dept Switch 07'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 07'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Dept Switch 07'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 07'
+  target_label: host_ip
+  replacement: '10.94.0.41'
+# Dept Switch 08
+- source_labels: [host]
+  regex: 'Dept Switch 08'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Dept Switch 08'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 08'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Dept Switch 08'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 08'
+  target_label: host_ip
+  replacement: '10.94.0.42'
+# Dept Switch 09 standby
+- source_labels: [host]
+  regex: 'Dept Switch 09 standby'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Dept Switch 09 standby'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 09 standby'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Dept Switch 09 standby'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'Dept Switch 09 standby'
+  target_label: host_ip
+  replacement: '10.94.0.43'
+# DEVSAPWINHOST
+- source_labels: [host]
+  regex: 'DEVSAPWINHOST'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'DEVSAPWINHOST'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'DEVSAPWINHOST'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'DEVSAPWINHOST'
+  target_label: role
+  replacement: 'Hypervisor'
+- source_labels: [host]
+  regex: 'DEVSAPWINHOST'
+  target_label: host_ip
+  replacement: '10.95.0.46'
+# Dispatch Department
+- source_labels: [host]
+  regex: 'Dispatch Department'
+  target_label: host_groups
+  replacement: ',MDEEP/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Dispatch Department'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Dispatch Department'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'Dispatch Department'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'Dispatch Department'
+  target_label: host_ip
+  replacement: '10.98.0.71'
+# DR-InternetVM
+- source_labels: [host]
+  regex: 'DR-InternetVM'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'DR-InternetVM'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'DR-InternetVM'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'DR-InternetVM'
+  target_label: role
+  replacement: 'Internet-VM'
+- source_labels: [host]
+  regex: 'DR-InternetVM'
+  target_label: host_ip
+  replacement: '10.95.0.13'
+# DRHOVDI
+- source_labels: [host]
+  regex: 'DRHOVDI'
+  target_label: host_groups
+  replacement: ',HO/Servers,Servers,'
+- source_labels: [host]
+  regex: 'DRHOVDI'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'DRHOVDI'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'DRHOVDI'
+  target_label: role
+  replacement: 'VDI'
+- source_labels: [host]
+  regex: 'DRHOVDI'
+  target_label: host_ip
+  replacement: '10.94.0.7'
+# DRVDI
+- source_labels: [host]
+  regex: 'DRVDI'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'DRVDI'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'DRVDI'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'DRVDI'
+  target_label: role
+  replacement: 'VDI'
+- source_labels: [host]
+  regex: 'DRVDI'
+  target_label: host_ip
+  replacement: '10.95.0.17'
+# ECMHOST
+- source_labels: [host]
+  regex: 'ECMHOST'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'ECMHOST'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'ECMHOST'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'ECMHOST'
+  target_label: role
+  replacement: 'App-Server'
+- source_labels: [host]
+  regex: 'ECMHOST'
+  target_label: host_ip
+  replacement: '10.95.0.112'
+# FGT-60F-MSour-Secondary_FW
+- source_labels: [host]
+  regex: 'FGT-60F-MSour-Secondary_FW'
+  target_label: host_groups
+  replacement: ',Firewall,MSOUR/Firewall,'
+- source_labels: [host]
+  regex: 'FGT-60F-MSour-Secondary_FW'
+  target_label: host_type
+  replacement: 'Firewall'
+- source_labels: [host]
+  regex: 'FGT-60F-MSour-Secondary_FW'
+  target_label: site
+  replacement: 'MSOUR'
+- source_labels: [host]
+  regex: 'FGT-60F-MSour-Secondary_FW'
+  target_label: role
+  replacement: 'Secondary-FW'
+- source_labels: [host]
+  regex: 'FGT-60F-MSour-Secondary_FW'
+  target_label: host_ip
+  replacement: '10.97.0.200'
+# FortiGate-60F-Mdeep_Primary
+- source_labels: [host]
+  regex: 'FortiGate-60F-Mdeep_Primary'
+  target_label: host_groups
+  replacement: ',Firewall,MDEEP/Firewall,'
+- source_labels: [host]
+  regex: 'FortiGate-60F-Mdeep_Primary'
+  target_label: host_type
+  replacement: 'Firewall'
+- source_labels: [host]
+  regex: 'FortiGate-60F-Mdeep_Primary'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'FortiGate-60F-Mdeep_Primary'
+  target_label: role
+  replacement: 'Primary-FW'
+- source_labels: [host]
+  regex: 'FortiGate-60F-Mdeep_Primary'
+  target_label: host_ip
+  replacement: '10.98.0.200'
+# HO-VMS
+- source_labels: [host]
+  regex: 'HO-VMS'
+  target_label: host_groups
+  replacement: ',HO/Servers,Servers,'
+- source_labels: [host]
+  regex: 'HO-VMS'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'HO-VMS'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'HO-VMS'
+  target_label: role
+  replacement: 'VMS'
+- source_labels: [host]
+  regex: 'HO-VMS'
+  target_label: host_ip
+  replacement: '10.94.0.49'
+# HO_Primary_Firewall
+- source_labels: [host]
+  regex: 'HO_Primary_Firewall'
+  target_label: host_groups
+  replacement: ',Firewall,HO/Firewall,'
+- source_labels: [host]
+  regex: 'HO_Primary_Firewall'
+  target_label: host_type
+  replacement: 'Firewall'
+- source_labels: [host]
+  regex: 'HO_Primary_Firewall'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'HO_Primary_Firewall'
+  target_label: role
+  replacement: 'Primary-FW'
+- source_labels: [host]
+  regex: 'HO_Primary_Firewall'
+  target_label: host_ip
+  replacement: '10.94.0.200'
+# HO_SOPHOS_INTERNET_PROXY_FW1
+- source_labels: [host]
+  regex: 'HO_SOPHOS_INTERNET_PROXY_FW1'
+  target_label: host_groups
+  replacement: ',Firewall,HO/Firewall,'
+- source_labels: [host]
+  regex: 'HO_SOPHOS_INTERNET_PROXY_FW1'
+  target_label: host_type
+  replacement: 'Firewall'
+- source_labels: [host]
+  regex: 'HO_SOPHOS_INTERNET_PROXY_FW1'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'HO_SOPHOS_INTERNET_PROXY_FW1'
+  target_label: role
+  replacement: 'Internet-Proxy'
+- source_labels: [host]
+  regex: 'HO_SOPHOS_INTERNET_PROXY_FW1'
+  target_label: host_ip
+  replacement: '10.94.0.10'
+# HO_WiFi Switch 10 standby
+- source_labels: [host]
+  regex: 'HO_WiFi Switch 10 standby'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'HO_WiFi Switch 10 standby'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'HO_WiFi Switch 10 standby'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'HO_WiFi Switch 10 standby'
+  target_label: role
+  replacement: 'WiFi-Switch'
+- source_labels: [host]
+  regex: 'HO_WiFi Switch 10 standby'
+  target_label: host_ip
+  replacement: '10.94.0.44'
+# HO_WiFi Uplink
+- source_labels: [host]
+  regex: 'HO_WiFi Uplink'
+  target_label: host_groups
+  replacement: ',HO/Switches,Switches,'
+- source_labels: [host]
+  regex: 'HO_WiFi Uplink'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'HO_WiFi Uplink'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'HO_WiFi Uplink'
+  target_label: role
+  replacement: 'WiFi-Switch'
+- source_labels: [host]
+  regex: 'HO_WiFi Uplink'
+  target_label: host_ip
+  replacement: '10.94.0.30'
+# HONAS
+- source_labels: [host]
+  regex: 'HONAS'
+  target_label: host_groups
+  replacement: ',HO/Storage,storage,'
+- source_labels: [host]
+  regex: 'HONAS'
+  target_label: host_type
+  replacement: 'Storage'
+- source_labels: [host]
+  regex: 'HONAS'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'HONAS'
+  target_label: role
+  replacement: 'NAS'
+- source_labels: [host]
+  regex: 'HONAS'
+  target_label: host_ip
+  replacement: '10.94.0.12'
+# HOVDI01
+- source_labels: [host]
+  regex: 'HOVDI01'
+  target_label: host_groups
+  replacement: ',HO/Servers,Servers,'
+- source_labels: [host]
+  regex: 'HOVDI01'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'HOVDI01'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'HOVDI01'
+  target_label: role
+  replacement: 'VDI'
+- source_labels: [host]
+  regex: 'HOVDI01'
+  target_label: host_ip
+  replacement: '10.94.0.5'
+# HOVDI02
+- source_labels: [host]
+  regex: 'HOVDI02'
+  target_label: host_groups
+  replacement: ',HO/Servers,Servers,'
+- source_labels: [host]
+  regex: 'HOVDI02'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'HOVDI02'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'HOVDI02'
+  target_label: role
+  replacement: 'VDI'
+- source_labels: [host]
+  regex: 'HOVDI02'
+  target_label: host_ip
+  replacement: '10.94.0.6'
+# HOVMHOST
+- source_labels: [host]
+  regex: 'HOVMHOST'
+  target_label: host_groups
+  replacement: ',HO/Servers,Servers,'
+- source_labels: [host]
+  regex: 'HOVMHOST'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'HOVMHOST'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'HOVMHOST'
+  target_label: role
+  replacement: 'Hypervisor'
+- source_labels: [host]
+  regex: 'HOVMHOST'
+  target_label: host_ip
+  replacement: '10.94.0.24'
+# HPHOST
+- source_labels: [host]
+  regex: 'HPHOST'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'HPHOST'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'HPHOST'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'HPHOST'
+  target_label: role
+  replacement: 'Hypervisor'
+- source_labels: [host]
+  regex: 'HPHOST'
+  target_label: host_ip
+  replacement: '10.95.0.79'
+# LPRVMSMDEEP
+- source_labels: [host]
+  regex: 'LPRVMSMDEEP'
+  target_label: host_groups
+  replacement: ',MDEEP/Servers,Servers,'
+- source_labels: [host]
+  regex: 'LPRVMSMDEEP'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'LPRVMSMDEEP'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'LPRVMSMDEEP'
+  target_label: role
+  replacement: 'Hypervisor'
+- source_labels: [host]
+  regex: 'LPRVMSMDEEP'
+  target_label: host_ip
+  replacement: '10.98.0.10'
+# Mailvault
+- source_labels: [host]
+  regex: 'Mailvault'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'Mailvault'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'Mailvault'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'Mailvault'
+  target_label: role
+  replacement: 'Mail'
+- source_labels: [host]
+  regex: 'Mailvault'
+  target_label: host_ip
+  replacement: '10.95.0.75'
+# Mdeep_Core Secondary
+- source_labels: [host]
+  regex: 'Mdeep_Core Secondary'
+  target_label: host_groups
+  replacement: ',MDEEP/Switches,Servers,'
+- source_labels: [host]
+  regex: 'Mdeep_Core Secondary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Mdeep_Core Secondary'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'Mdeep_Core Secondary'
+  target_label: role
+  replacement: 'Core-Switch'
+- source_labels: [host]
+  regex: 'Mdeep_Core Secondary'
+  target_label: host_ip
+  replacement: '10.98.0.6'
+# Mdeep_core_Primary1
+- source_labels: [host]
+  regex: 'Mdeep_core_Primary1'
+  target_label: host_groups
+  replacement: ',MDEEP/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Mdeep_core_Primary1'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Mdeep_core_Primary1'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'Mdeep_core_Primary1'
+  target_label: role
+  replacement: 'Core-Switch'
+- source_labels: [host]
+  regex: 'Mdeep_core_Primary1'
+  target_label: host_ip
+  replacement: '10.98.0.15'
+# Mdeep_Department Primary
+- source_labels: [host]
+  regex: 'Mdeep_Department Primary'
+  target_label: host_groups
+  replacement: ',MDEEP/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Mdeep_Department Primary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Mdeep_Department Primary'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'Mdeep_Department Primary'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'Mdeep_Department Primary'
+  target_label: host_ip
+  replacement: '10.98.0.7'
+# Mdeep_Department Secondary
+- source_labels: [host]
+  regex: 'Mdeep_Department Secondary'
+  target_label: host_groups
+  replacement: ',MDEEP/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Mdeep_Department Secondary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Mdeep_Department Secondary'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'Mdeep_Department Secondary'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'Mdeep_Department Secondary'
+  target_label: host_ip
+  replacement: '10.98.0.8'
+# Mdeep_Fiber Primary
+- source_labels: [host]
+  regex: 'Mdeep_Fiber Primary'
+  target_label: host_groups
+  replacement: ',MDEEP/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Mdeep_Fiber Primary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Mdeep_Fiber Primary'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'Mdeep_Fiber Primary'
+  target_label: role
+  replacement: 'Fiber-Switch'
+- source_labels: [host]
+  regex: 'Mdeep_Fiber Primary'
+  target_label: host_ip
+  replacement: '10.98.0.18'
+# Mdeep_Fiber-Secondary
+- source_labels: [host]
+  regex: 'Mdeep_Fiber-Secondary'
+  target_label: host_groups
+  replacement: ',MDEEP/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Mdeep_Fiber-Secondary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Mdeep_Fiber-Secondary'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'Mdeep_Fiber-Secondary'
+  target_label: role
+  replacement: 'Fiber-Switch'
+- source_labels: [host]
+  regex: 'Mdeep_Fiber-Secondary'
+  target_label: host_ip
+  replacement: '10.98.0.9'
+# Mdeep_NAS
+- source_labels: [host]
+  regex: 'Mdeep_NAS'
+  target_label: host_groups
+  replacement: ',MDEEP/Storage,storage,'
+- source_labels: [host]
+  regex: 'Mdeep_NAS'
+  target_label: host_type
+  replacement: 'Storage'
+- source_labels: [host]
+  regex: 'Mdeep_NAS'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'Mdeep_NAS'
+  target_label: role
+  replacement: 'NAS'
+- source_labels: [host]
+  regex: 'Mdeep_NAS'
+  target_label: host_ip
+  replacement: '10.98.0.95'
+# MDEEPINTERNET01
+- source_labels: [host]
+  regex: 'MDEEPINTERNET01'
+  target_label: host_groups
+  replacement: ',MDEEP/Servers,Servers,'
+- source_labels: [host]
+  regex: 'MDEEPINTERNET01'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'MDEEPINTERNET01'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'MDEEPINTERNET01'
+  target_label: role
+  replacement: 'Internet-VM'
+- source_labels: [host]
+  regex: 'MDEEPINTERNET01'
+  target_label: host_ip
+  replacement: '10.98.0.3'
+# MDEEPVDI01
+- source_labels: [host]
+  regex: 'MDEEPVDI01'
+  target_label: host_groups
+  replacement: ',MDEEP/Servers,Servers,'
+- source_labels: [host]
+  regex: 'MDEEPVDI01'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'MDEEPVDI01'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'MDEEPVDI01'
+  target_label: role
+  replacement: 'VDI'
+- source_labels: [host]
+  regex: 'MDEEPVDI01'
+  target_label: host_ip
+  replacement: '10.98.0.1'
+# MDEEPVDI2
+- source_labels: [host]
+  regex: 'MDEEPVDI2'
+  target_label: host_groups
+  replacement: ',MDEEP/Servers,Servers,'
+- source_labels: [host]
+  regex: 'MDEEPVDI2'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'MDEEPVDI2'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'MDEEPVDI2'
+  target_label: role
+  replacement: 'VDI'
+- source_labels: [host]
+  regex: 'MDEEPVDI2'
+  target_label: host_ip
+  replacement: '10.98.0.2'
+# Msour_CCTV
+- source_labels: [host]
+  regex: 'Msour_CCTV'
+  target_label: host_groups
+  replacement: ',MSOUR/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Msour_CCTV'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Msour_CCTV'
+  target_label: site
+  replacement: 'MSOUR'
+- source_labels: [host]
+  regex: 'Msour_CCTV'
+  target_label: role
+  replacement: 'CCTV-Switch'
+- source_labels: [host]
+  regex: 'Msour_CCTV'
+  target_label: host_ip
+  replacement: '10.97.0.249'
+# Msour_core Primary
+- source_labels: [host]
+  regex: 'Msour_core Primary'
+  target_label: host_groups
+  replacement: ',MSOUR/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Msour_core Primary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Msour_core Primary'
+  target_label: site
+  replacement: 'MSOUR'
+- source_labels: [host]
+  regex: 'Msour_core Primary'
+  target_label: role
+  replacement: 'Core-Switch'
+- source_labels: [host]
+  regex: 'Msour_core Primary'
+  target_label: host_ip
+  replacement: '10.97.0.250'
+# Msour_core switch secondary
+- source_labels: [host]
+  regex: 'Msour_core switch secondary'
+  target_label: host_groups
+  replacement: ',MSOUR/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Msour_core switch secondary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Msour_core switch secondary'
+  target_label: site
+  replacement: 'MSOUR'
+- source_labels: [host]
+  regex: 'Msour_core switch secondary'
+  target_label: role
+  replacement: 'Core-Switch'
+- source_labels: [host]
+  regex: 'Msour_core switch secondary'
+  target_label: host_ip
+  replacement: '10.97.0.254'
+# Msour_Department_Primary
+- source_labels: [host]
+  regex: 'Msour_Department_Primary'
+  target_label: host_groups
+  replacement: ',MSOUR/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Msour_Department_Primary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Msour_Department_Primary'
+  target_label: site
+  replacement: 'MSOUR'
+- source_labels: [host]
+  regex: 'Msour_Department_Primary'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'Msour_Department_Primary'
+  target_label: host_ip
+  replacement: '10.97.0.247'
+# Msour_Fiber Primary
+- source_labels: [host]
+  regex: 'Msour_Fiber Primary'
+  target_label: host_groups
+  replacement: ',MSOUR/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Msour_Fiber Primary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Msour_Fiber Primary'
+  target_label: site
+  replacement: 'MSOUR'
+- source_labels: [host]
+  regex: 'Msour_Fiber Primary'
+  target_label: role
+  replacement: 'Fiber-Switch'
+- source_labels: [host]
+  regex: 'Msour_Fiber Primary'
+  target_label: host_ip
+  replacement: '10.97.0.251'
+# Msour_Fiber_Secondary
+- source_labels: [host]
+  regex: 'Msour_Fiber_Secondary'
+  target_label: host_groups
+  replacement: ',MSOUR/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Msour_Fiber_Secondary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Msour_Fiber_Secondary'
+  target_label: site
+  replacement: 'MSOUR'
+- source_labels: [host]
+  regex: 'Msour_Fiber_Secondary'
+  target_label: role
+  replacement: 'Fiber-Switch'
+- source_labels: [host]
+  regex: 'Msour_Fiber_Secondary'
+  target_label: host_ip
+  replacement: '10.97.0.248'
+# Msour_NAS
+- source_labels: [host]
+  regex: 'Msour_NAS'
+  target_label: host_groups
+  replacement: ',MSOUR/Storage,storage,'
+- source_labels: [host]
+  regex: 'Msour_NAS'
+  target_label: host_type
+  replacement: 'Storage'
+- source_labels: [host]
+  regex: 'Msour_NAS'
+  target_label: site
+  replacement: 'MSOUR'
+- source_labels: [host]
+  regex: 'Msour_NAS'
+  target_label: role
+  replacement: 'NAS'
+- source_labels: [host]
+  regex: 'Msour_NAS'
+  target_label: host_ip
+  replacement: '10.97.0.31'
+# Msour_Standby_Switch
+- source_labels: [host]
+  regex: 'Msour_Standby_Switch'
+  target_label: host_groups
+  replacement: ',MSOUR/Switches,Switches,'
+- source_labels: [host]
+  regex: 'Msour_Standby_Switch'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'Msour_Standby_Switch'
+  target_label: site
+  replacement: 'MSOUR'
+- source_labels: [host]
+  regex: 'Msour_Standby_Switch'
+  target_label: role
+  replacement: 'Core-Switch'
+- source_labels: [host]
+  regex: 'Msour_Standby_Switch'
+  target_label: host_ip
+  replacement: '10.97.0.253'
+# MSOURINTERNET01
+- source_labels: [host]
+  regex: 'MSOURINTERNET01'
+  target_label: host_groups
+  replacement: ',MSOUR/Servers,Servers,'
+- source_labels: [host]
+  regex: 'MSOURINTERNET01'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'MSOURINTERNET01'
+  target_label: site
+  replacement: 'MSOUR'
+- source_labels: [host]
+  regex: 'MSOURINTERNET01'
+  target_label: role
+  replacement: 'Internet-VM'
+- source_labels: [host]
+  regex: 'MSOURINTERNET01'
+  target_label: host_ip
+  replacement: '10.97.0.3'
+# MSOURSTANDBY
+- source_labels: [host]
+  regex: 'MSOURSTANDBY'
+  target_label: host_groups
+  replacement: ',MSOUR/Servers,Servers,'
+- source_labels: [host]
+  regex: 'MSOURSTANDBY'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'MSOURSTANDBY'
+  target_label: site
+  replacement: 'MSOUR'
+- source_labels: [host]
+  regex: 'MSOURSTANDBY'
+  target_label: role
+  replacement: 'Standby-Server'
+- source_labels: [host]
+  regex: 'MSOURSTANDBY'
+  target_label: host_ip
+  replacement: '10.97.0.2'
+# MSOURVDI01
+- source_labels: [host]
+  regex: 'MSOURVDI01'
+  target_label: host_groups
+  replacement: ',MSOUR/Servers,Servers,'
+- source_labels: [host]
+  regex: 'MSOURVDI01'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'MSOURVDI01'
+  target_label: site
+  replacement: 'MSOUR'
+- source_labels: [host]
+  regex: 'MSOURVDI01'
+  target_label: role
+  replacement: 'VDI'
+- source_labels: [host]
+  regex: 'MSOURVDI01'
+  target_label: host_ip
+  replacement: '10.97.0.1'
+# Pat_nas
+- source_labels: [host]
+  regex: 'Pat_nas'
+  target_label: host_groups
+  replacement: ',MDEEP/Storage,storage,'
+- source_labels: [host]
+  regex: 'Pat_nas'
+  target_label: host_type
+  replacement: 'Storage'
+- source_labels: [host]
+  regex: 'Pat_nas'
+  target_label: site
+  replacement: 'MDEEP'
+- source_labels: [host]
+  regex: 'Pat_nas'
+  target_label: role
+  replacement: 'NAS'
+- source_labels: [host]
+  regex: 'Pat_nas'
+  target_label: host_ip
+  replacement: '10.98.0.33'
+# RDG-POWERBI-DEV
+- source_labels: [host]
+  regex: 'RDG-POWERBI-DEV'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'RDG-POWERBI-DEV'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'RDG-POWERBI-DEV'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'RDG-POWERBI-DEV'
+  target_label: role
+  replacement: 'RDS'
+- source_labels: [host]
+  regex: 'RDG-POWERBI-DEV'
+  target_label: host_ip
+  replacement: '10.95.0.40'
+# RDG1
+- source_labels: [host]
+  regex: 'RDG1'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'RDG1'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'RDG1'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'RDG1'
+  target_label: role
+  replacement: 'RDS'
+- source_labels: [host]
+  regex: 'RDG1'
+  target_label: host_ip
+  replacement: '10.95.0.10'
+# RGVPN2
+- source_labels: [host]
+  regex: 'RGVPN2'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'RGVPN2'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'RGVPN2'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'RGVPN2'
+  target_label: role
+  replacement: 'VPN'
+- source_labels: [host]
+  regex: 'RGVPN2'
+  target_label: host_ip
+  replacement: '10.95.0.39'
+# San Switch primary
+- source_labels: [host]
+  regex: 'San Switch primary'
+  target_label: host_groups
+  replacement: ',SONIC/Switches,Switches,'
+- source_labels: [host]
+  regex: 'San Switch primary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'San Switch primary'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'San Switch primary'
+  target_label: role
+  replacement: 'SAN-Switch'
+- source_labels: [host]
+  regex: 'San Switch primary'
+  target_label: host_ip
+  replacement: '10.95.0.58'
+# San Switch secondary
+- source_labels: [host]
+  regex: 'San Switch secondary'
+  target_label: host_groups
+  replacement: ',SONIC/Switches,Switches,'
+- source_labels: [host]
+  regex: 'San Switch secondary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'San Switch secondary'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'San Switch secondary'
+  target_label: role
+  replacement: 'SAN-Switch'
+- source_labels: [host]
+  regex: 'San Switch secondary'
+  target_label: host_ip
+  replacement: '10.95.0.59'
+# SAP-DEVHOST1
+- source_labels: [host]
+  regex: 'SAP-DEVHOST1'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'SAP-DEVHOST1'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'SAP-DEVHOST1'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'SAP-DEVHOST1'
+  target_label: role
+  replacement: 'Hypervisor'
+- source_labels: [host]
+  regex: 'SAP-DEVHOST1'
+  target_label: host_ip
+  replacement: '10.95.0.45'
+# SBELHBDNQ
+- source_labels: [host]
+  regex: 'SBELHBDNQ'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'SBELHBDNQ'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'SBELHBDNQ'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'SBELHBDNQ'
+  target_label: role
+  replacement: 'App-Server'
+- source_labels: [host]
+  regex: 'SBELHBDNQ'
+  target_label: host_ip
+  replacement: '10.95.0.213'
+# SBELHDBDNQ
+- source_labels: [host]
+  regex: 'SBELHDBDNQ'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'SBELHDBDNQ'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'SBELHDBDNQ'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'SBELHDBDNQ'
+  target_label: role
+  replacement: 'App-Server'
+- source_labels: [host]
+  regex: 'SBELHDBDNQ'
+  target_label: host_ip
+  replacement: '10.95.0.211'
+# SBELHDBDQ
+- source_labels: [host]
+  regex: 'SBELHDBDQ'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'SBELHDBDQ'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'SBELHDBDQ'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'SBELHDBDQ'
+  target_label: role
+  replacement: 'App-Server'
+- source_labels: [host]
+  regex: 'SBELHDBDQ'
+  target_label: host_ip
+  replacement: '10.95.0.212'
+# SBELHDBP
+- source_labels: [host]
+  regex: 'SBELHDBP'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'SBELHDBP'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'SBELHDBP'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'SBELHDBP'
+  target_label: role
+  replacement: 'App-Server'
+- source_labels: [host]
+  regex: 'SBELHDBP'
+  target_label: host_ip
+  replacement: '10.95.0.206'
+# sbels4apps
+- source_labels: [host]
+  regex: 'sbels4apps'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'sbels4apps'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'sbels4apps'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'sbels4apps'
+  target_label: role
+  replacement: 'App-Server'
+- source_labels: [host]
+  regex: 'sbels4apps'
+  target_label: host_ip
+  replacement: '10.95.0.216'
+# sbels4dapp
+- source_labels: [host]
+  regex: 'sbels4dapp'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'sbels4dapp'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'sbels4dapp'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'sbels4dapp'
+  target_label: role
+  replacement: 'App-Server'
+- source_labels: [host]
+  regex: 'sbels4dapp'
+  target_label: host_ip
+  replacement: '10.95.0.214'
+# sbels4qapp
+- source_labels: [host]
+  regex: 'sbels4qapp'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'sbels4qapp'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'sbels4qapp'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'sbels4qapp'
+  target_label: role
+  replacement: 'App-Server'
+- source_labels: [host]
+  regex: 'sbels4qapp'
+  target_label: host_ip
+  replacement: '10.95.0.215'
+# Server-VMS-Msour
+- source_labels: [host]
+  regex: 'Server-VMS-Msour'
+  target_label: host_groups
+  replacement: ',MSOUR/Servers,Servers,'
+- source_labels: [host]
+  regex: 'Server-VMS-Msour'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'Server-VMS-Msour'
+  target_label: site
+  replacement: 'MSOUR'
+- source_labels: [host]
+  regex: 'Server-VMS-Msour'
+  target_label: role
+  replacement: 'VMS'
+- source_labels: [host]
+  regex: 'Server-VMS-Msour'
+  target_label: host_ip
+  replacement: '10.97.0.11'
+# Server-VMS-Sez
+- source_labels: [host]
+  regex: 'Server-VMS-Sez'
+  target_label: host_groups
+  replacement: ',SEZ/Servers,Servers,'
+- source_labels: [host]
+  regex: 'Server-VMS-Sez'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'Server-VMS-Sez'
+  target_label: site
+  replacement: 'SEZ'
+- source_labels: [host]
+  regex: 'Server-VMS-Sez'
+  target_label: role
+  replacement: 'VMS'
+- source_labels: [host]
+  regex: 'Server-VMS-Sez'
+  target_label: host_ip
+  replacement: '10.96.0.6'
+# SEZ-INTERNETVM
+- source_labels: [host]
+  regex: 'SEZ-INTERNETVM'
+  target_label: host_groups
+  replacement: ',SEZ/Servers,Servers,'
+- source_labels: [host]
+  regex: 'SEZ-INTERNETVM'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'SEZ-INTERNETVM'
+  target_label: site
+  replacement: 'SEZ'
+- source_labels: [host]
+  regex: 'SEZ-INTERNETVM'
+  target_label: role
+  replacement: 'Internet-VM'
+- source_labels: [host]
+  regex: 'SEZ-INTERNETVM'
+  target_label: host_ip
+  replacement: '10.96.0.2'
+# SEZ-VDI01
+- source_labels: [host]
+  regex: 'SEZ-VDI01'
+  target_label: host_groups
+  replacement: ',SEZ/Servers,Servers,'
+- source_labels: [host]
+  regex: 'SEZ-VDI01'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'SEZ-VDI01'
+  target_label: site
+  replacement: 'SEZ'
+- source_labels: [host]
+  regex: 'SEZ-VDI01'
+  target_label: role
+  replacement: 'VDI'
+- source_labels: [host]
+  regex: 'SEZ-VDI01'
+  target_label: host_ip
+  replacement: '10.96.0.1'
+# SEZ_Core_Primary1
+- source_labels: [host]
+  regex: 'SEZ_Core_Primary1'
+  target_label: host_groups
+  replacement: ',SEZ/Switches,Switches,'
+- source_labels: [host]
+  regex: 'SEZ_Core_Primary1'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'SEZ_Core_Primary1'
+  target_label: site
+  replacement: 'SEZ'
+- source_labels: [host]
+  regex: 'SEZ_Core_Primary1'
+  target_label: role
+  replacement: 'Core-Switch'
+- source_labels: [host]
+  regex: 'SEZ_Core_Primary1'
+  target_label: host_ip
+  replacement: '10.96.0.252'
+# SEZ_Core_Secondary
+- source_labels: [host]
+  regex: 'SEZ_Core_Secondary'
+  target_label: host_groups
+  replacement: ',SEZ/Switches,Switches,'
+- source_labels: [host]
+  regex: 'SEZ_Core_Secondary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'SEZ_Core_Secondary'
+  target_label: site
+  replacement: 'SEZ'
+- source_labels: [host]
+  regex: 'SEZ_Core_Secondary'
+  target_label: role
+  replacement: 'Core-Switch'
+- source_labels: [host]
+  regex: 'SEZ_Core_Secondary'
+  target_label: host_ip
+  replacement: '10.96.0.254'
+# SEZ_Department_Primary
+- source_labels: [host]
+  regex: 'SEZ_Department_Primary'
+  target_label: host_groups
+  replacement: ',SEZ/Switches,Switches,'
+- source_labels: [host]
+  regex: 'SEZ_Department_Primary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'SEZ_Department_Primary'
+  target_label: site
+  replacement: 'SEZ'
+- source_labels: [host]
+  regex: 'SEZ_Department_Primary'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'SEZ_Department_Primary'
+  target_label: host_ip
+  replacement: '10.96.0.253'
+# SEZ_Department_Secondary
+- source_labels: [host]
+  regex: 'SEZ_Department_Secondary'
+  target_label: host_groups
+  replacement: ',SEZ/Switches,Switches,'
+- source_labels: [host]
+  regex: 'SEZ_Department_Secondary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'SEZ_Department_Secondary'
+  target_label: site
+  replacement: 'SEZ'
+- source_labels: [host]
+  regex: 'SEZ_Department_Secondary'
+  target_label: role
+  replacement: 'Dept-Switch'
+- source_labels: [host]
+  regex: 'SEZ_Department_Secondary'
+  target_label: host_ip
+  replacement: '10.96.0.251'
+# SEZ_NAS
+- source_labels: [host]
+  regex: 'SEZ_NAS'
+  target_label: host_groups
+  replacement: ',SEZ/Storage,Servers,'
+- source_labels: [host]
+  regex: 'SEZ_NAS'
+  target_label: host_type
+  replacement: 'Storage'
+- source_labels: [host]
+  regex: 'SEZ_NAS'
+  target_label: site
+  replacement: 'SEZ'
+- source_labels: [host]
+  regex: 'SEZ_NAS'
+  target_label: role
+  replacement: 'NAS'
+- source_labels: [host]
+  regex: 'SEZ_NAS'
+  target_label: host_ip
+  replacement: '10.96.0.95'
+# SEZ_Pithampur_Primary_FW
+- source_labels: [host]
+  regex: 'SEZ_Pithampur_Primary_FW'
+  target_label: host_groups
+  replacement: ',Firewall,SEZ/Firewall,'
+- source_labels: [host]
+  regex: 'SEZ_Pithampur_Primary_FW'
+  target_label: host_type
+  replacement: 'Firewall'
+- source_labels: [host]
+  regex: 'SEZ_Pithampur_Primary_FW'
+  target_label: site
+  replacement: 'SEZ'
+- source_labels: [host]
+  regex: 'SEZ_Pithampur_Primary_FW'
+  target_label: role
+  replacement: 'Primary-FW'
+- source_labels: [host]
+  regex: 'SEZ_Pithampur_Primary_FW'
+  target_label: host_ip
+  replacement: '10.96.0.200'
+# SEZVDI2
+- source_labels: [host]
+  regex: 'SEZVDI2'
+  target_label: host_groups
+  replacement: ',SEZ/Servers,Servers,'
+- source_labels: [host]
+  regex: 'SEZVDI2'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'SEZVDI2'
+  target_label: site
+  replacement: 'SEZ'
+- source_labels: [host]
+  regex: 'SEZVDI2'
+  target_label: role
+  replacement: 'VDI'
+- source_labels: [host]
+  regex: 'SEZVDI2'
+  target_label: host_ip
+  replacement: '10.96.0.3'
+# SOCVM
+- source_labels: [host]
+  regex: 'SOCVM'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'SOCVM'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'SOCVM'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'SOCVM'
+  target_label: role
+  replacement: 'Security'
+- source_labels: [host]
+  regex: 'SOCVM'
+  target_label: host_ip
+  replacement: '10.95.0.181'
+# SONIC-SAN
+- source_labels: [host]
+  regex: 'SONIC-SAN'
+  target_label: host_groups
+  replacement: ',HO/Storage,storage,'
+- source_labels: [host]
+  regex: 'SONIC-SAN'
+  target_label: host_type
+  replacement: 'Storage'
+- source_labels: [host]
+  regex: 'SONIC-SAN'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'SONIC-SAN'
+  target_label: role
+  replacement: 'SAN'
+- source_labels: [host]
+  regex: 'SONIC-SAN'
+  target_label: host_ip
+  replacement: '10.94.0.13'
+# SONIC_Core_Switch_Secondary
+- source_labels: [host]
+  regex: 'SONIC_Core_Switch_Secondary'
+  target_label: host_groups
+  replacement: ',SONIC/Switches,Switches,'
+- source_labels: [host]
+  regex: 'SONIC_Core_Switch_Secondary'
+  target_label: host_type
+  replacement: 'Switch'
+- source_labels: [host]
+  regex: 'SONIC_Core_Switch_Secondary'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'SONIC_Core_Switch_Secondary'
+  target_label: role
+  replacement: 'Core-Switch'
+- source_labels: [host]
+  regex: 'SONIC_Core_Switch_Secondary'
+  target_label: host_ip
+  replacement: '10.95.0.205'
+# SONICAD
+- source_labels: [host]
+  regex: 'SONICAD'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'SONICAD'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'SONICAD'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'SONICAD'
+  target_label: role
+  replacement: 'AD-DNS'
+- source_labels: [host]
+  regex: 'SONICAD'
+  target_label: host_ip
+  replacement: '10.95.0.4'
+# SONICBIOCHEM_MSA1
+- source_labels: [host]
+  regex: 'SONICBIOCHEM_MSA1'
+  target_label: host_groups
+  replacement: ',SONIC/Storage,storage,'
+- source_labels: [host]
+  regex: 'SONICBIOCHEM_MSA1'
+  target_label: host_type
+  replacement: 'Storage'
+- source_labels: [host]
+  regex: 'SONICBIOCHEM_MSA1'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'SONICBIOCHEM_MSA1'
+  target_label: role
+  replacement: 'SAN'
+- source_labels: [host]
+  regex: 'SONICBIOCHEM_MSA1'
+  target_label: host_ip
+  replacement: '10.95.0.56'
+# SONICBIOCHEM_MSA2
+- source_labels: [host]
+  regex: 'SONICBIOCHEM_MSA2'
+  target_label: host_groups
+  replacement: ',SONIC/Storage,storage,'
+- source_labels: [host]
+  regex: 'SONICBIOCHEM_MSA2'
+  target_label: host_type
+  replacement: 'Storage'
+- source_labels: [host]
+  regex: 'SONICBIOCHEM_MSA2'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'SONICBIOCHEM_MSA2'
+  target_label: role
+  replacement: 'SAN'
+- source_labels: [host]
+  regex: 'SONICBIOCHEM_MSA2'
+  target_label: host_ip
+  replacement: '10.95.0.187'
+# SOPHOSVM
+- source_labels: [host]
+  regex: 'SOPHOSVM'
+  target_label: host_groups
+  replacement: ',HO/Servers,Servers,'
+- source_labels: [host]
+  regex: 'SOPHOSVM'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'SOPHOSVM'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'SOPHOSVM'
+  target_label: role
+  replacement: 'Security'
+- source_labels: [host]
+  regex: 'SOPHOSVM'
+  target_label: host_ip
+  replacement: '10.94.0.9'
+# SQLDB
+- source_labels: [host]
+  regex: 'SQLDB'
+  target_label: host_groups
+  replacement: ',SONIC/Servers,Servers,'
+- source_labels: [host]
+  regex: 'SQLDB'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'SQLDB'
+  target_label: site
+  replacement: 'SONIC'
+- source_labels: [host]
+  regex: 'SQLDB'
+  target_label: role
+  replacement: 'DB-Server'
+- source_labels: [host]
+  regex: 'SQLDB'
+  target_label: host_ip
+  replacement: '10.95.0.116'
+# TESTVDI
+- source_labels: [host]
+  regex: 'TESTVDI'
+  target_label: host_groups
+  replacement: ',HO/Servers,Servers,'
+- source_labels: [host]
+  regex: 'TESTVDI'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'TESTVDI'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'TESTVDI'
+  target_label: role
+  replacement: 'VDI'
+- source_labels: [host]
+  regex: 'TESTVDI'
+  target_label: host_ip
+  replacement: '10.94.0.8'
+# VMT-2024
+- source_labels: [host]
+  regex: 'VMT-2024'
+  target_label: host_groups
+  replacement: ',HO/Servers,Servers,'
+- source_labels: [host]
+  regex: 'VMT-2024'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'VMT-2024'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'VMT-2024'
+  target_label: role
+  replacement: 'Hypervisor'
+- source_labels: [host]
+  regex: 'VMT-2024'
+  target_label: host_ip
+  replacement: '10.94.0.25'
+# Zabbix server
+- source_labels: [host]
+  regex: 'Zabbix server'
+  target_label: host_groups
+  replacement: ',Zabbix servers,'
+- source_labels: [host]
+  regex: 'Zabbix server'
+  target_label: host_type
+  replacement: 'Server'
+- source_labels: [host]
+  regex: 'Zabbix server'
+  target_label: site
+  replacement: 'HO'
+- source_labels: [host]
+  regex: 'Zabbix server'
+  target_label: role
+  replacement: 'Monitoring'
+- source_labels: [host]
+  regex: 'Zabbix server'
+  target_label: host_ip
+  replacement: '127.0.0.1'

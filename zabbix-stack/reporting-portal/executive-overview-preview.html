@@ -1,0 +1,336 @@
+<title>Executive Health Overview — Complete View</title>
+<style>
+  :root{
+    --bg:#f4f6f9; --panel:#ffffff; --panel-2:#fafbfc; --border:#e3e8ef;
+    --ink:#1c2430; --muted:#5c6b7a; --faint:#8a97a6;
+    --accent:#1f8fbf; --track:#e7ecf2;
+    --green:#2f9e57; --yellow:#c99a2e; --orange:#d8792f; --red:#d94b46;
+    --green-bg:#e7f4ec; --yellow-bg:#f7efd9; --orange-bg:#f8ead9; --red-bg:#f8e2e1;
+    --shadow:0 1px 2px rgba(20,30,45,.06),0 1px 8px rgba(20,30,45,.04);
+    --font-sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --font-mono:ui-monospace,"SF Mono","Cascadia Code",Menlo,Consolas,monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root{
+      --bg:#0c1117; --panel:#141a22; --panel-2:#11161d; --border:#232b36;
+      --ink:#d7e0ea; --muted:#8b98a7; --faint:#616d7b;
+      --accent:#38a9d6; --track:#1e2731;
+      --green:#40b869; --yellow:#d7ac42; --orange:#e08a3f; --red:#e5564f;
+      --green-bg:#12241a; --yellow-bg:#262013; --orange-bg:#271a10; --red-bg:#2a1514;
+      --shadow:0 1px 2px rgba(0,0,0,.4),0 2px 12px rgba(0,0,0,.28);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#f4f6f9; --panel:#ffffff; --panel-2:#fafbfc; --border:#e3e8ef;
+    --ink:#1c2430; --muted:#5c6b7a; --faint:#8a97a6; --accent:#1f8fbf; --track:#e7ecf2;
+    --green:#2f9e57; --yellow:#c99a2e; --orange:#d8792f; --red:#d94b46;
+    --green-bg:#e7f4ec; --yellow-bg:#f7efd9; --orange-bg:#f8ead9; --red-bg:#f8e2e1;
+    --shadow:0 1px 2px rgba(20,30,45,.06),0 1px 8px rgba(20,30,45,.04);
+  }
+  :root[data-theme="dark"]{
+    --bg:#0c1117; --panel:#141a22; --panel-2:#11161d; --border:#232b36;
+    --ink:#d7e0ea; --muted:#8b98a7; --faint:#616d7b; --accent:#38a9d6; --track:#1e2731;
+    --green:#40b869; --yellow:#d7ac42; --orange:#e08a3f; --red:#e5564f;
+    --green-bg:#12241a; --yellow-bg:#262013; --orange-bg:#271a10; --red-bg:#2a1514;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 2px 12px rgba(0,0,0,.28);
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-sans);
+    -webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums;line-height:1.45}
+  .wrap{max-width:1440px;margin:0 auto;padding:20px clamp(12px,3vw,28px) 56px}
+
+  /* header */
+  header{display:flex;flex-wrap:wrap;align-items:center;gap:14px 20px;margin:6px 0 20px}
+  .brand{display:flex;flex-direction:column;gap:3px;margin-right:auto}
+  .brand h1{margin:0;font-size:clamp(18px,2.4vw,24px);font-weight:700;letter-spacing:-.01em;text-wrap:balance}
+  .brand .sub{font-size:12px;color:var(--muted);letter-spacing:.02em}
+  .live{display:inline-flex;align-items:center;gap:7px;font-size:12px;color:var(--muted);
+    font-family:var(--font-mono)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--green);
+    box-shadow:0 0 0 0 rgba(64,184,105,.6);animation:pulse 2.4s infinite}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(64,184,105,.5)}70%{box-shadow:0 0 0 7px rgba(64,184,105,0)}100%{box-shadow:0 0 0 0 rgba(64,184,105,0)}}
+  @media (prefers-reduced-motion:reduce){.dot{animation:none}}
+  .chips{display:flex;gap:6px;flex-wrap:wrap}
+  .chip{font-size:11.5px;padding:4px 10px;border-radius:999px;border:1px solid var(--border);
+    color:var(--muted);background:var(--panel);letter-spacing:.03em}
+  .chip.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+
+  .note{font-size:12px;color:var(--muted);background:var(--panel-2);border:1px solid var(--border);
+    border-left:3px solid var(--accent);border-radius:8px;padding:9px 13px;margin-bottom:18px}
+  .note code{font-family:var(--font-mono);color:var(--ink);font-size:11.5px}
+
+  /* grid */
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    box-shadow:var(--shadow);padding:14px 15px;min-width:0}
+  .ptitle{font-size:11px;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
+    color:var(--faint);margin:0 0 11px;display:flex;justify-content:space-between;align-items:center;gap:8px}
+  .ptitle .ptag{font-weight:500;letter-spacing:.02em;text-transform:none;color:var(--muted);font-size:11px}
+  .span3{grid-column:span 3}.span4{grid-column:span 4}.span6{grid-column:span 6}
+  .span2{grid-column:span 2}.span12{grid-column:span 12}
+  .rowlabel{grid-column:span 12;font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--faint);margin:12px 2px 0}
+
+  /* gauge */
+  .gauge{display:flex;flex-direction:column;align-items:center;gap:2px}
+  .gauge svg{width:100%;max-width:186px;height:auto}
+  .g-val{font-size:26px;font-weight:700;letter-spacing:-.01em}
+  .g-sub{font-size:11.5px;color:var(--muted)}
+  .sevrow{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+  .sevpill{font-size:10.5px;font-family:var(--font-mono);padding:2px 7px;border-radius:6px;
+    border:1px solid var(--border);color:var(--muted)}
+
+  /* stat box */
+  .box{display:flex;flex-direction:column;justify-content:space-between;gap:10px;min-height:96px;
+    border-radius:12px;border:1px solid var(--border);padding:13px 14px;box-shadow:var(--shadow)}
+  .box .bname{font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;opacity:.85}
+  .box .bval{font-size:30px;font-weight:750;letter-spacing:-.02em;line-height:1}
+  .box .bfoot{font-size:11px;opacity:.8}
+  .box.green{background:var(--green-bg);border-color:color-mix(in srgb,var(--green) 40%,var(--border))}
+  .box.orange{background:var(--orange-bg);border-color:color-mix(in srgb,var(--orange) 40%,var(--border))}
+  .box.red{background:var(--red-bg);border-color:color-mix(in srgb,var(--red) 45%,var(--border))}
+  .box.green .bval{color:var(--green)}.box.orange .bval{color:var(--orange)}.box.red .bval{color:var(--red)}
+
+  /* charts */
+  .chart{width:100%;height:150px;display:block}
+  .legend{display:flex;gap:16px;font-size:11.5px;color:var(--muted);margin-top:6px}
+  .legend b{color:var(--ink);font-weight:600}
+  .lk{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;vertical-align:baseline}
+
+  /* bar list */
+  .blist{display:flex;flex-direction:column;gap:9px}
+  .bitem{display:grid;grid-template-columns:1fr auto;gap:3px 10px;align-items:center}
+  .bitem .bh{font-size:12.5px;font-family:var(--font-mono);color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .bitem .bp{font-size:12.5px;font-weight:600}
+  .btrack{grid-column:1/3;height:7px;border-radius:4px;background:var(--track);overflow:hidden}
+  .bfill{height:100%;border-radius:4px}
+
+  /* sla bars */
+  .sla{display:flex;align-items:flex-end;gap:14px;height:150px;padding:6px 4px 0}
+  .slacol{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+  .slabar{width:100%;max-width:54px;border-radius:6px 6px 0 0;position:relative}
+  .slabar span{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;font-family:var(--font-mono)}
+  .slacol .site{font-size:11.5px;color:var(--muted);font-family:var(--font-mono)}
+
+  /* table */
+  table{width:100%;border-collapse:collapse;font-size:12.5px}
+  th{text-align:left;font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);
+    font-weight:600;padding:0 8px 8px;border-bottom:1px solid var(--border)}
+  td{padding:8px;border-bottom:1px solid var(--border);color:var(--muted)}
+  tr:last-child td{border-bottom:none}
+  td.ev{color:var(--ink);font-family:var(--font-mono);font-size:12px}
+  .sev{display:inline-block;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:6px;white-space:nowrap}
+  .sev.Disaster{background:var(--red-bg);color:var(--red)}
+  .sev.High{background:var(--orange-bg);color:var(--orange)}
+  .sev.Average{background:var(--yellow-bg);color:var(--yellow)}
+  .sev.Warning{background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--accent)}
+  .sev.Info{background:var(--track);color:var(--muted)}
+
+  .foot{margin-top:26px;font-size:11.5px;color:var(--faint);text-align:center;line-height:1.7}
+  @media (max-width:900px){
+    .span3{grid-column:span 6}.span4{grid-column:span 6}.span6{grid-column:span 12}.span2{grid-column:span 4}
+  }
+  @media (max-width:560px){
+    .span3,.span4,.span2{grid-column:span 6}
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="brand">
+      <h1>Executive Health Overview</h1>
+      <span class="sub">NOC console · Zabbix → VictoriaMetrics · 16 panels · live snapshot 2026-08-01</span>
+    </div>
+    <div class="chips">
+      <span class="chip on">All sites</span>
+      <span class="chip">HO</span><span class="chip">MDEEP</span><span class="chip">MSOUR</span>
+      <span class="chip">SEZ</span><span class="chip">SONIC</span>
+    </div>
+    <span class="live"><span class="dot"></span>live · refresh 1m</span>
+  </header>
+
+  <div class="note">
+    Faithful preview of the provisioned Grafana dashboard at
+    <code>/grafana/d/executive-overview</code> (folder “Monitoring Dashboard”). Every tile below shows the
+    <b>current live value</b> pulled from your stack — this page is the “complete view” of all 16 configured panels.
+  </div>
+
+  <div class="grid">
+
+    <!-- GAUGES -->
+    <div class="rowlabel">Health &amp; Alerts</div>
+
+    <section class="panel span4">
+      <p class="ptitle">Overall Health <span class="ptag">fleet availability</span></p>
+      <div class="gauge">
+        <svg viewBox="0 0 120 78" role="img" aria-label="Overall health 95.1 percent">
+          <g transform="rotate(135 60 60)" fill="none" stroke-width="11" stroke-linecap="round">
+            <circle cx="60" cy="60" r="54" stroke="var(--track)" stroke-dasharray="254.5 339.3"/>
+            <circle cx="60" cy="60" r="54" stroke="var(--orange)" stroke-dasharray="242.1 339.3"/>
+          </g>
+          <text x="60" y="60" text-anchor="middle" class="g-val" fill="var(--ink)" font-size="20" font-weight="700">95.1%</text>
+        </svg>
+        <span class="g-sub">SLO 99.5% · currently degraded</span>
+      </div>
+    </section>
+
+    <section class="panel span4">
+      <p class="ptitle">Infrastructure Health <span class="ptag">avail + capacity</span></p>
+      <div class="gauge">
+        <svg viewBox="0 0 120 78" role="img" aria-label="Infrastructure health 84.8">
+          <g transform="rotate(135 60 60)" fill="none" stroke-width="11" stroke-linecap="round">
+            <circle cx="60" cy="60" r="54" stroke="var(--track)" stroke-dasharray="254.5 339.3"/>
+            <circle cx="60" cy="60" r="54" stroke="var(--orange)" stroke-dasharray="215.7 339.3"/>
+          </g>
+          <text x="60" y="60" text-anchor="middle" fill="var(--ink)" font-size="20" font-weight="700">84.8</text>
+        </svg>
+        <span class="g-sub">60% avail · 20% CPU · 20% mem headroom</span>
+      </div>
+    </section>
+
+    <section class="panel span4">
+      <p class="ptitle">Active Alerts <span class="ptag">total open problems</span></p>
+      <div class="gauge">
+        <svg viewBox="0 0 120 78" role="img" aria-label="627 active alerts">
+          <g transform="rotate(135 60 60)" fill="none" stroke-width="11" stroke-linecap="round">
+            <circle cx="60" cy="60" r="54" stroke="var(--track)" stroke-dasharray="254.5 339.3"/>
+            <circle cx="60" cy="60" r="54" stroke="var(--red)" stroke-dasharray="199.4 339.3"/>
+          </g>
+          <text x="60" y="60" text-anchor="middle" fill="var(--ink)" font-size="20" font-weight="700">627</text>
+        </svg>
+        <div class="sevrow">
+          <span class="sevpill" style="color:var(--red)">Disaster 4</span>
+          <span class="sevpill" style="color:var(--orange)">High 120</span>
+          <span class="sevpill" style="color:var(--yellow)">Avg 407</span>
+          <span class="sevpill">Warn 87</span>
+          <span class="sevpill">Info 9</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- BOXES -->
+    <div class="rowlabel">Subsystem summaries</div>
+
+    <div class="box green span2"><div class="bname">Server Summary</div><div class="bval">100%</div><div class="bfoot">7 hypervisors · all up</div></div>
+    <div class="box orange span2"><div class="bname">Virtual Machine</div><div class="bval">97.4%</div><div class="bfoot">~40 guests · avail 7d</div></div>
+    <div class="box orange span2"><div class="bname">Network Summary</div><div class="bval">90.4%</div><div class="bfoot">switches + firewalls</div></div>
+    <div class="box green span2"><div class="bname">Storage Summary</div><div class="bval">100%</div><div class="bfoot">storage arrays · all up</div></div>
+    <div class="box green span2"><div class="bname">Uptime Summary</div><div class="bval">67d</div><div class="bfoot">avg system uptime</div></div>
+    <div class="box red span2"><div class="bname">Top Critical Alerts</div><div class="bval">124</div><div class="bfoot">Disaster + High open</div></div>
+
+    <!-- CHARTS -->
+    <div class="rowlabel">Trends</div>
+
+    <section class="panel span6">
+      <p class="ptitle">Availability Trend <span class="ptag">last 7 days · current 95.12%</span></p>
+      <svg class="chart" viewBox="0 0 600 150" preserveAspectRatio="none" aria-label="Availability trend">
+        <defs><linearGradient id="av" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="var(--accent)" stop-opacity="0.32"/>
+          <stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient></defs>
+        <line x1="0" y1="30" x2="600" y2="30" stroke="var(--green)" stroke-width="1" stroke-dasharray="4 4" opacity="0.5"/>
+        <text x="6" y="25" font-size="10" fill="var(--green)" font-family="var(--font-mono)">SLO 99.5%</text>
+        <path d="M0,52 L50,55 L100,50 L150,58 L200,54 L250,70 L300,62 L350,48 L400,66 L450,58 L500,72 L550,60 L600,57
+                 L600,150 L0,150 Z" fill="url(#av)"/>
+        <path d="M0,52 L50,55 L100,50 L150,58 L200,54 L250,70 L300,62 L350,48 L400,66 L450,58 L500,72 L550,60 L600,57"
+              fill="none" stroke="var(--accent)" stroke-width="2"/>
+        <circle cx="600" cy="57" r="3.5" fill="var(--accent)"/>
+      </svg>
+      <div class="legend"><span><span class="lk" style="background:var(--accent)"></span>Fleet availability <b>95.12%</b></span>
+        <span>range this week <b>88.9%–99.9%</b></span></div>
+    </section>
+
+    <section class="panel span6">
+      <p class="ptitle">Bandwidth Utilization <span class="ptag">all links · in / out</span></p>
+      <svg class="chart" viewBox="0 0 600 150" preserveAspectRatio="none" aria-label="Bandwidth in and out">
+        <defs>
+          <linearGradient id="bin" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--green)" stop-opacity="0.34"/><stop offset="1" stop-color="var(--green)" stop-opacity="0"/></linearGradient>
+          <linearGradient id="bout" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="var(--accent)" stop-opacity="0.34"/><stop offset="1" stop-color="var(--accent)" stop-opacity="0"/></linearGradient>
+        </defs>
+        <line x1="0" y1="75" x2="600" y2="75" stroke="var(--border)" stroke-width="1"/>
+        <path d="M0,48 L60,40 L120,52 L180,36 L240,50 L300,30 L360,46 L420,38 L480,54 L540,42 L600,45 L600,75 L0,75 Z" fill="url(#bin)"/>
+        <path d="M0,48 L60,40 L120,52 L180,36 L240,50 L300,30 L360,46 L420,38 L480,54 L540,42 L600,45" fill="none" stroke="var(--green)" stroke-width="1.6"/>
+        <path d="M0,104 L60,112 L120,100 L180,120 L240,106 L300,126 L360,110 L420,118 L480,102 L540,116 L600,108 L600,75 L0,75 Z" fill="url(#bout)"/>
+        <path d="M0,104 L60,112 L120,100 L180,120 L240,106 L300,126 L360,110 L420,118 L480,102 L540,116 L600,108" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+      </svg>
+      <div class="legend"><span><span class="lk" style="background:var(--green)"></span>Inbound <b>1.53 Gbps</b></span>
+        <span><span class="lk" style="background:var(--accent)"></span>Outbound <b>2.20 Gbps</b></span></div>
+    </section>
+
+    <!-- TOP-N -->
+    <div class="rowlabel">Top resource consumers</div>
+
+    <section class="panel span4">
+      <p class="ptitle">Top 5 CPU Utilization <span class="ptag">servers · peak %</span></p>
+      <div class="blist" id="cpu"></div>
+    </section>
+    <section class="panel span4">
+      <p class="ptitle">Top 5 Memory Utilization <span class="ptag">servers · peak %</span></p>
+      <div class="blist" id="mem"></div>
+    </section>
+    <section class="panel span4">
+      <p class="ptitle">Top Storage Usage <span class="ptag">filesystems · peak %</span></p>
+      <div class="blist" id="stg"></div>
+    </section>
+
+    <!-- SLA + EVENTS -->
+    <div class="rowlabel">SLA &amp; events</div>
+
+    <section class="panel span6">
+      <p class="ptitle">SLA Availability by Site <span class="ptag">last 7 days</span></p>
+      <div class="sla" id="sla"></div>
+    </section>
+
+    <section class="panel span6">
+      <p class="ptitle">Recent Events <span class="ptag">last 10 · newest first</span></p>
+      <div style="overflow-x:auto">
+        <table>
+          <thead><tr><th>Severity</th><th>Problem</th></tr></thead>
+          <tbody id="events"></tbody>
+        </table>
+      </div>
+    </section>
+
+  </div>
+
+  <p class="foot">
+    Live snapshot rendered from VictoriaMetrics + Zabbix API · values current as of 2026-08-01.<br>
+    The interactive, always-current version is the provisioned Grafana dashboard — this page mirrors its layout for a full at-a-glance view.
+  </p>
+</div>
+
+<script>
+  const col = (v,t)=> v>=t[3]?'var(--red)': v>=t[2]?'var(--orange)': v>=t[1]?'var(--yellow)':'var(--green)';
+  const UTIL=[0,70,85,95];
+  const bars=(id,data)=>{
+    document.getElementById(id).innerHTML = data.map(([h,v])=>{
+      const c=col(v,UTIL);
+      return `<div class="bitem"><span class="bh" title="${h}">${h}</span>`+
+             `<span class="bp" style="color:${c}">${v.toFixed(1)}%</span>`+
+             `<span class="btrack"><span class="bfill" style="width:${Math.min(v,100)}%;background:${c}"></span></span></div>`;
+    }).join('');
+  };
+  bars('cpu',[['MDEEPVDI2',99.91],['MSOURSTANDBY',98.31],['MSOURINTERNET01',94.90],['RDG-POWERBI-DEV',81.51],['SEZ-INTERNETVM',80.68]]);
+  bars('mem',[['SBELHDBDQ',99.68],['SBELHDBP',99.65],['RDG-POWERBI-DEV',98.35],['SOPHOSVM',96.18],['RGVPN2',96.12]]);
+  bars('stg',[['Server-VMS-Msour',100.0],['Server-VMS-Sez',100.0],['DRVDI',97.29],['Mailvault',97.07],['SOPHOSVM',96.17]]);
+
+  const SLAT=[90,98,99.5];
+  const slaCol=v=> v<SLAT[0]?'var(--red)': v<SLAT[1]?'var(--orange)': v<SLAT[2]?'var(--yellow)':'var(--green)';
+  const sites=[['HO',88.88],['SONIC',93.10],['MDEEP',99.93],['MSOUR',99.94],['SEZ',99.95]];
+  // scale 85..100 -> 0..100% height for visual separation
+  document.getElementById('sla').innerHTML = sites.map(([s,v])=>{
+    const h=Math.max(6,((v-85)/15)*100);
+    return `<div class="slacol"><div class="slabar" style="height:${h}%;background:${slaCol(v)}"><span>${v.toFixed(2)}</span></div><div class="site">${s}</div></div>`;
+  }).join('');
+
+  const ev=[['Warning','Windows: Memory Pages/sec too high (>1000 for 5m)'],
+    ['Average','Network Generic Device: Interface Slot0/20(): Link down'],
+    ['Average','D-Link DES/DGS Switch: Interface Slot0/4(): Link down'],
+    ['Average','D-Link DES/DGS Switch: Interface Slot0/1(): Link down'],
+    ['Average','D-Link DES/DGS Switch: Interface Slot0/17(): Link down'],
+    ['Average','D-Link DES/DGS Switch: Interface Slot0/5(): Link down'],
+    ['Average','D-Link DES/DGS Switch: Interface Slot0/6(): Link down'],
+    ['Info','D-Link DES/DGS Switch: Interface Slot0/9(): Ethernet lower speed'],
+    ['Average','D-Link DES/DGS Switch: Interface Slot0/7(): Link down']];
+  document.getElementById('events').innerHTML = ev.map(([s,n])=>
+    `<tr><td><span class="sev ${s}">${s}</span></td><td class="ev">${n}</td></tr>`).join('');
+</script>

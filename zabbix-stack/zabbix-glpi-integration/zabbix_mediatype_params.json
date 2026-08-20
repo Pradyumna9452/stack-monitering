@@ -1,0 +1,59 @@
+{
+  "description": "GLPI Integration Media Type Parameters - Import these into Zabbix",
+  "mediatype_name": "GLPI Integration",
+  "parameters": [
+    {"name": "webhook_url", "value": "http://glpi-webhook:5002/webhook"},
+    {"name": "event_id", "value": "{EVENT.ID}"},
+    {"name": "event_name", "value": "{EVENT.NAME}"},
+    {"name": "event_severity", "value": "{EVENT.SEVERITY}"},
+    {"name": "event_status", "value": "{EVENT.STATUS}"},
+    {"name": "event_value", "value": "{EVENT.VALUE}"},
+    {"name": "event_update_status", "value": "{EVENT.UPDATE.STATUS}"},
+    {"name": "event_recovery_value", "value": "{EVENT.RECOVERY.VALUE}"},
+    {"name": "event_recovery_date", "value": "{EVENT.RECOVERY.DATE}"},
+    {"name": "event_recovery_time", "value": "{EVENT.RECOVERY.TIME}"},
+    {"name": "event_date", "value": "{EVENT.DATE}"},
+    {"name": "event_time", "value": "{EVENT.TIME}"},
+    {"name": "event_duration", "value": "{EVENT.DURATION}"},
+    {"name": "event_tags", "value": "{EVENT.TAGS}"},
+    {"name": "event_ack_status", "value": "{EVENT.ACK.STATUS}"},
+    {"name": "trigger_id", "value": "{TRIGGER.ID}"},
+    {"name": "trigger_name", "value": "{TRIGGER.NAME}"},
+    {"name": "trigger_description", "value": "{TRIGGER.DESCRIPTION}"},
+    {"name": "trigger_status", "value": "{TRIGGER.STATUS}"},
+    {"name": "trigger_severity", "value": "{TRIGGER.SEVERITY}"},
+    {"name": "host_name", "value": "{HOST.NAME}"},
+    {"name": "host_id", "value": "{HOST.ID}"},
+    {"name": "host_ip", "value": "{HOST.IP}"},
+    {"name": "host_dns", "value": "{HOST.DNS}"},
+    {"name": "host_conn", "value": "{HOST.CONN}"},
+    {"name": "item_name", "value": "{ITEM.NAME}"},
+    {"name": "item_value", "value": "{ITEM.VALUE}"},
+    {"name": "alert_subject", "value": "{ALERT.SUBJECT}"},
+    {"name": "alert_message", "value": "{ALERT.MESSAGE}"},
+    {"name": "ack_message", "value": "{ACK.MESSAGE}"},
+    {"name": "ack_user", "value": "{USER.FULLNAME}"}
+  ],
+  "zabbix_action_config": {
+    "description": "Configure Zabbix Actions to use this media type",
+    "action_name": "GLPI Ticket Automation",
+    "conditions": "Problem severity >= Warning",
+    "operations": {
+      "problem": {
+        "type": "Send message",
+        "media_type": "GLPI Integration",
+        "user": "GLPI_Robot"
+      },
+      "recovery": {
+        "type": "Send message", 
+        "media_type": "GLPI Integration",
+        "user": "GLPI_Robot"
+      },
+      "update": {
+        "type": "Send message",
+        "media_type": "GLPI Integration", 
+        "user": "GLPI_Robot"
+      }
+    }
+  }
+}

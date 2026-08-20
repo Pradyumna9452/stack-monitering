@@ -1,0 +1,4 @@
+# Zabbix-GLPI Integration Dependencies
+flask>=2.3.0
+requests>=2.28.0
+gunicorn>=21.0.0

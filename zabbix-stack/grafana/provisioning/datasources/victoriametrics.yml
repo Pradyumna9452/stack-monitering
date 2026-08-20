@@ -1,0 +1,21 @@
+apiVersion: 1
+
+# Ensure a single, stable VictoriaMetrics datasource with a fixed UID so that
+# provisioned dashboards can reference it directly (uid: victoriametrics) instead
+# of a fragile template variable. Zabbix item data is streamed into VictoriaMetrics
+# by the Zabbix server connector (not the python exporter).
+deleteDatasources:
+  - name: VictoriaMetrics
+    orgId: 1
+
+datasources:
+  - name: VictoriaMetrics
+    uid: victoriametrics
+    type: prometheus
+    access: proxy
+    url: http://victoriametrics:8428
+    isDefault: true
+    editable: true
+    jsonData:
+      httpMethod: POST
+      timeInterval: "60s"

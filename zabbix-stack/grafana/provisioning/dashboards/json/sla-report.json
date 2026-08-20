@@ -1,0 +1,1346 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Authoritative SLA report. Reads Zabbix's own SLA engine (sla.getsli) live via the Infinity datasource, so the numbers are identical to the native Zabbix Services -> SLA report. SLO 99.9%, weekly period. This SLA is NOT routed through VictoriaMetrics because the computed SLI is not carried by the native connector.",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [
+    {
+      "title": "Open Zabbix native SLA report",
+      "url": "/zabbix/zabbix.php?action=slareport.list",
+      "type": "link",
+      "icon": "external link",
+      "targetBlank": true,
+      "tags": []
+    }
+  ],
+  "refresh": "5m",
+  "liveNow": false,
+  "schemaVersion": 38,
+  "tags": [
+    "sla",
+    "slo",
+    "report",
+    "zabbix"
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "slo",
+        "label": "SLO Target %",
+        "type": "constant",
+        "query": "99.9",
+        "current": {
+          "selected": true,
+          "text": "99.9",
+          "value": "99.9"
+        },
+        "hide": 2,
+        "skipUrlSync": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-90d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "SLA Report",
+  "uid": "sla-report",
+  "version": 2,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "title": "Infrastructure Availability SLA  \u2014  SLO $slo %  (weekly, from Zabbix SLA engine)",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "zabbix-sla-infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 3,
+          "min": 95,
+          "max": 100,
+          "unit": "percent",
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "-1": {
+                  "text": "N/A",
+                  "color": "text"
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "red",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 99.5
+              },
+              {
+                "color": "green",
+                "value": 99.9
+              }
+            ]
+          },
+          "displayName": "Overall Attainment"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "id": 2,
+      "options": {
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true,
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "zabbix-sla-infinity"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://zabbix-web:8080/api_jsonrpc.php",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw",
+            "body_content_type": "application/json",
+            "data": "{\"jsonrpc\":\"2.0\",\"method\":\"sla.getsli\",\"params\":{\"slaid\":\"1\",\"periods\":1},\"id\":1}"
+          },
+          "parser": "jq-backend",
+          "root_selector": ".result as $r | [ { sli: ([ range(0;($r.serviceids|length)) | select($r.serviceids[.] != 1 and $r.sli[0][.].sli >= 0) | $r.sli[0][.].sli ] | min // 100) } ]",
+          "columns": [
+            {
+              "selector": "sli",
+              "text": "Overall Attainment",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "title": "Overall SLA Attainment (current period)",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "zabbix-sla-infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          },
+          "decimals": 2,
+          "unit": "percent",
+          "mappings": [],
+          "displayName": "SLO Target"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 6,
+        "y": 1
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "zabbix-sla-infinity"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://zabbix-web:8080/api_jsonrpc.php",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw",
+            "body_content_type": "application/json",
+            "data": "{\"jsonrpc\":\"2.0\",\"method\":\"sla.get\",\"params\":{\"output\":[\"slo\"],\"slaids\":[\"1\"]},\"id\":1}"
+          },
+          "parser": "backend",
+          "root_selector": "result",
+          "columns": [
+            {
+              "selector": "slo",
+              "text": "SLO Target",
+              "type": "number"
+            }
+          ],
+          "legendFormat": "SLO Target"
+        }
+      ],
+      "title": "SLO Target",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "zabbix-sla-infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "type": "value",
+              "options": {
+                "0": {
+                  "text": "0",
+                  "color": "green"
+                }
+              }
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 3
+              }
+            ]
+          },
+          "unit": "short",
+          "displayName": "Services Below SLO"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 9,
+        "y": 1
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "zabbix-sla-infinity"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://zabbix-web:8080/api_jsonrpc.php",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw",
+            "body_content_type": "application/json",
+            "data": "{\"jsonrpc\":\"2.0\",\"method\":\"sla.getsli\",\"params\":{\"slaid\":\"1\",\"periods\":1},\"id\":1}"
+          },
+          "parser": "jq-backend",
+          "root_selector": ".result as $r | [ { n: ([ range(0;($r.serviceids|length)) | select($r.serviceids[.] != 1 and $r.sli[0][.].sli >= 0 and $r.sli[0][.].sli < 99.9) ] | length) } ]",
+          "columns": [
+            {
+              "selector": "n",
+              "text": "Services Below SLO",
+              "type": "number"
+            }
+          ],
+          "legendFormat": "Services Below SLO"
+        }
+      ],
+      "title": "Services Below SLO",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "zabbix-sla-infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          },
+          "unit": "short",
+          "mappings": [],
+          "displayName": "Total Services"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 3,
+        "x": 13,
+        "y": 1
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "zabbix-sla-infinity"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://zabbix-web:8080/api_jsonrpc.php",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw",
+            "body_content_type": "application/json",
+            "data": "{\"jsonrpc\":\"2.0\",\"method\":\"sla.getsli\",\"params\":{\"slaid\":\"1\",\"periods\":1},\"id\":1}"
+          },
+          "parser": "jq-backend",
+          "root_selector": ".result as $r | [ { n: ([ $r.serviceids[] | select(. != 1) ] | length) } ]",
+          "columns": [
+            {
+              "selector": "n",
+              "text": "Total Services",
+              "type": "number"
+            }
+          ],
+          "legendFormat": "Total Services in SLA"
+        }
+      ],
+      "title": "Total Services in SLA",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "zabbix-sla-infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 0,
+          "unit": "dtdurations",
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1
+              },
+              {
+                "color": "red",
+                "value": 3600
+              }
+            ]
+          },
+          "displayName": "Downtime (overall)"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 16,
+        "y": 1
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "zabbix-sla-infinity"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://zabbix-web:8080/api_jsonrpc.php",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw",
+            "body_content_type": "application/json",
+            "data": "{\"jsonrpc\":\"2.0\",\"method\":\"sla.getsli\",\"params\":{\"slaid\":\"1\",\"periods\":1},\"id\":1}"
+          },
+          "parser": "jq-backend",
+          "root_selector": ".result as $r | [ { downtime: ([ range(0;($r.serviceids|length)) | select($r.serviceids[.] != 1) | $r.sli[0][.].downtime ] | add // 0) } ]",
+          "columns": [
+            {
+              "selector": "downtime",
+              "text": "Downtime (overall)",
+              "type": "number"
+            }
+          ],
+          "legendFormat": "Overall Downtime (current period)"
+        }
+      ],
+      "title": "Overall Downtime (current period)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "zabbix-sla-infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          },
+          "unit": "dateTimeAsIso",
+          "mappings": [],
+          "displayName": "Period Start"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 4,
+        "x": 20,
+        "y": 1
+      },
+      "id": 7,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "zabbix-sla-infinity"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://zabbix-web:8080/api_jsonrpc.php",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw",
+            "body_content_type": "application/json",
+            "data": "{\"jsonrpc\":\"2.0\",\"method\":\"sla.getsli\",\"params\":{\"slaid\":\"1\",\"periods\":1},\"id\":1}"
+          },
+          "parser": "jq-backend",
+          "root_selector": ".result as $r | [ { from: ($r.periods[0].period_from * 1000) } ]",
+          "columns": [
+            {
+              "selector": "from",
+              "text": "Period Start",
+              "type": "number"
+            }
+          ],
+          "legendFormat": "Current Period Start"
+        }
+      ],
+      "title": "Current Period Start",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 7
+      },
+      "id": 8,
+      "title": "Per-Service SLA Compliance  (current period, sorted worst-first)",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "zabbix-sla-infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Service"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 280
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Current"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 110
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "-1": { "text": "OK", "color": "green", "index": 0 },
+                      "0":  { "text": "Not classified", "color": "grey", "index": 1 },
+                      "1":  { "text": "Info", "color": "blue", "index": 2 },
+                      "2":  { "text": "Warning", "color": "yellow", "index": 3 },
+                      "3":  { "text": "Average", "color": "orange", "index": 4 },
+                      "4":  { "text": "High", "color": "red", "index": 5 },
+                      "5":  { "text": "Disaster", "color": "dark-red", "index": 6 }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": { "type": "color-background", "mode": "basic" }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SLI %"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 4
+              },
+              {
+                "id": "custom.width",
+                "value": 130
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "-1": {
+                        "text": "N/A",
+                        "color": "text"
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 99
+                    },
+                    {
+                      "color": "green",
+                      "value": 99.9
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Status"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 120
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "1": {
+                        "text": "MET",
+                        "color": "green",
+                        "index": 0
+                      },
+                      "0": {
+                        "text": "BREACHED",
+                        "color": "red",
+                        "index": 1
+                      },
+                      "2": {
+                        "text": "N/A",
+                        "color": "text",
+                        "index": 2
+                      }
+                    }
+                  }
+                ]
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Uptime"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurations"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Downtime"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurations"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "custom.width",
+                "value": 140
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 1
+                    },
+                    {
+                      "color": "red",
+                      "value": 3600
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Error Budget Left"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurations"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "custom.width",
+                "value": 160
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "green",
+                      "value": 0.001
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 9,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "SLI %"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "zabbix-sla-infinity"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://zabbix-web:8080/api_jsonrpc.php",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw",
+            "body_content_type": "application/json",
+            "data": "{\"jsonrpc\":\"2.0\",\"method\":\"sla.getsli\",\"params\":{\"slaid\":\"1\",\"periods\":1},\"id\":1}"
+          },
+          "parser": "jq-backend",
+          "root_selector": ".result as $r | [ range(0;($r.serviceids|length)) | select($r.serviceids[.] != 1) | { serviceid: ($r.serviceids[.]|tostring), sli: $r.sli[0][.].sli, uptime: $r.sli[0][.].uptime, downtime: $r.sli[0][.].downtime, error_budget: $r.sli[0][.].error_budget, met: (if $r.sli[0][.].sli < 0 then 2 elif $r.sli[0][.].sli >= 99.9 then 1 else 0 end) } ]",
+          "columns": [
+            {
+              "selector": "serviceid",
+              "text": "serviceid",
+              "type": "string"
+            },
+            {
+              "selector": "sli",
+              "text": "SLI %",
+              "type": "number"
+            },
+            {
+              "selector": "met",
+              "text": "Status",
+              "type": "number"
+            },
+            {
+              "selector": "uptime",
+              "text": "Uptime",
+              "type": "number"
+            },
+            {
+              "selector": "downtime",
+              "text": "Downtime",
+              "type": "number"
+            },
+            {
+              "selector": "error_budget",
+              "text": "Error Budget Left",
+              "type": "number"
+            }
+          ]
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "zabbix-sla-infinity"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://zabbix-web:8080/api_jsonrpc.php",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw",
+            "body_content_type": "application/json",
+            "data": "{\"jsonrpc\":\"2.0\",\"method\":\"service.get\",\"params\":{\"output\":[\"serviceid\",\"name\",\"status\"]},\"id\":1}"
+          },
+          "parser": "jq-backend",
+          "root_selector": ".result",
+          "columns": [
+            {
+              "selector": "serviceid",
+              "text": "serviceid",
+              "type": "string"
+            },
+            {
+              "selector": "name",
+              "text": "Service",
+              "type": "string"
+            },
+            {
+              "selector": "status",
+              "text": "Current",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "serviceid",
+            "mode": "inner"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "serviceid": true
+            },
+            "indexByName": {
+              "Service": 0,
+              "Current": 1,
+              "SLI %": 2,
+              "Status": 3,
+              "Uptime": 4,
+              "Downtime": 5,
+              "Error Budget Left": 6
+            },
+            "renameByName": {}
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": [
+              {
+                "desc": false,
+                "displayName": "SLI %"
+              },
+              {
+                "desc": true,
+                "displayName": "Current"
+              }
+            ]
+          }
+        }
+      ],
+      "title": "Per-Service SLA Compliance",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "id": 10,
+      "title": "Weekly SLA Trend  \u2014  overall (Infrastructure Services)",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "zabbix-sla-infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "pointSize": 6,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "always",
+            "spanNulls": true,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "line"
+            }
+          },
+          "decimals": 3,
+          "min": 99,
+          "max": 100,
+          "unit": "percent",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 99.9
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 16,
+        "x": 0,
+        "y": 29
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [
+            "min",
+            "mean",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "zabbix-sla-infinity"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "timeseries",
+          "url": "http://zabbix-web:8080/api_jsonrpc.php",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw",
+            "body_content_type": "application/json",
+            "data": "{\"jsonrpc\":\"2.0\",\"method\":\"sla.getsli\",\"params\":{\"slaid\":\"1\",\"periods\":13},\"id\":1}"
+          },
+          "parser": "jq-backend",
+          "root_selector": ".result as $r | [ range(0;($r.periods|length)) | . as $p | { time: $r.periods[$p].period_from, sli: ([ range(0;($r.serviceids|length)) | select($r.serviceids[.] != 1 and $r.sli[$p][.].sli >= 0) | $r.sli[$p][.].sli ] | min // -1) } | select(.sli >= 0) ]",
+          "columns": [
+            {
+              "selector": "time",
+              "text": "time",
+              "type": "timestamp_epoch_s"
+            },
+            {
+              "selector": "sli",
+              "text": "SLA %",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "title": "Weekly SLA % (up to last 13 weeks, N/A before SLA effective date)  \u2014  red line = SLO 99.9%",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "yesoreyeram-infinity-datasource",
+        "uid": "zabbix-sla-infinity"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "left",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": false
+          },
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "transparent",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Week Starting"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsIso"
+              },
+              {
+                "id": "custom.width",
+                "value": 180
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "SLA %"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 3
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "red",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 99
+                    },
+                    {
+                      "color": "green",
+                      "value": 99.9
+                    }
+                  ]
+                }
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-background",
+                  "mode": "basic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Downtime"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdurations"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 11,
+        "w": 8,
+        "x": 16,
+        "y": 29
+      },
+      "id": 12,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "fields": ""
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Week Starting"
+          }
+        ]
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "yesoreyeram-infinity-datasource",
+            "uid": "zabbix-sla-infinity"
+          },
+          "type": "json",
+          "source": "url",
+          "format": "table",
+          "url": "http://zabbix-web:8080/api_jsonrpc.php",
+          "url_options": {
+            "method": "POST",
+            "body_type": "raw",
+            "body_content_type": "application/json",
+            "data": "{\"jsonrpc\":\"2.0\",\"method\":\"sla.getsli\",\"params\":{\"slaid\":\"1\",\"periods\":13},\"id\":1}"
+          },
+          "parser": "jq-backend",
+          "root_selector": ".result as $r | [ range(0;($r.periods|length)) | . as $p | { time: $r.periods[$p].period_from, sli: ([ range(0;($r.serviceids|length)) | select($r.serviceids[.] != 1 and $r.sli[$p][.].sli >= 0) | $r.sli[$p][.].sli ] | min // -1), downtime: ([ range(0;($r.serviceids|length)) | select($r.serviceids[.] != 1) | $r.sli[$p][.].downtime ] | add // 0) } | select(.sli >= 0) ]",
+          "columns": [
+            {
+              "selector": "time",
+              "text": "Week Starting",
+              "type": "timestamp_epoch_s"
+            },
+            {
+              "selector": "sli",
+              "text": "SLA %",
+              "type": "number"
+            },
+            {
+              "selector": "downtime",
+              "text": "Downtime",
+              "type": "number"
+            }
+          ]
+        }
+      ],
+      "title": "Weekly SLA breakdown",
+      "type": "table"
+    }
+  ]
+}

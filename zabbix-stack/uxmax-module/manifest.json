@@ -1,0 +1,49 @@
+{
+  "manifest_version": 2.0,
+  "type": "module",
+  "author": "initMAX s.r.o.",
+  "name": "uxMAX",
+  "description": "The uxMAX module enhances Zabbix by providing advanced UI configuration options that improve clarity and overall user experience",
+  "url": "https://www.initmax.com",
+  "id": "uxmax",
+  "namespace": "uxMAX",
+  "version": "7.0-35",
+  "assets": {
+    "css": [],
+    "js": []
+  },
+  "actions": {
+    "mod.uxmax.css": {
+      "class": "Css",
+      "layout": "layout.uxmax.css"
+    },
+    "mod.uxmax.font": {
+      "class": "Font",
+      "layout": "layout.uxmax.font"
+    },
+    "mod.uxmax.form": {
+      "class": "ConfigurationForm",
+      "view": "mod.uxmax.form"
+    },
+    "mod.uxmax.form.update": {
+      "class": "ConfigurationFormUpdate"
+    },
+    "mod.uxmax.userprefs": {
+      "class": "UserPrefs",
+      "view": "mod.uxmax.userprefs"
+    },
+    "mod.uxmax.userprefs.update": {
+      "class": "UserPrefsUpdate"
+    },
+    "latest.view": {
+      "class": "LatestView",
+      "view": "monitoring.latest.view",
+      "layout": "layout.htmlpage"
+    },
+    "latest.view.refresh": {
+      "class": "LatestViewRefresh",
+      "view": "monitoring.latest.view.refresh",
+      "layout": "layout.json"
+    }
+  }
+}

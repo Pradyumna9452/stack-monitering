@@ -1,0 +1,76 @@
+module:
+  name: uxMAX
+menu:
+  uxmax-configuration: 'Ajustes de UI'
+  uxmax-user-preferences: Mi uxMAX
+tabs:
+  general: General
+form:
+  section:
+    dashboards: Dashboards
+    interface: Comportamiento de la UI
+    appearance: Apariencia
+    color-tags: Etiquetas de color
+    syntax-highlighting: Resaltado de sintaxis
+  enable-dragging-of-modal-windows: Ventanas modales arrastrables
+  latest-show-disabled-items: Mostrar elementos deshabilitados en Latest data
+  hide-widget-header: Ocultar la cabecera del widget fuera del modo edición
+  compact-dashboard: Dashboard compacto
+  allow-user-override: Permitir reglas de etiquetas de color por usuario
+  custom-color-theme: Tema de color personalizado
+  body-background-color: Color de fondo de la página
+  navigation-background-color: Color de fondo de la barra lateral
+  modal-window-minimal-width:
+    label: Ancho mínimo de la ventana modal
+    button:
+      open: Abrir
+  custom-font:
+    label: Fuente personalizada
+    button:
+      add: Añadir
+      remove: Eliminar
+    variant:
+      use-external-css: Usar CSS externo
+      upload-font-file: Subir archivo de fuente
+      google-font-url: URL de fuente de Google
+    hint:
+      store-font-locally: Almacenar fuente localmente
+      supported-formats: 'Formatos compatibles: woff, woff2, ttf, otf, eot'
+  color-tags:
+    label: Etiquetas de color
+    table:
+      match: Coincidencia
+      string: Cadena
+    button:
+      add: Añadir
+      remove: Eliminar
+    match:
+      starts-with: Empieza por
+      contains: Contiene
+      ends-with: Termina por
+    value: Valor
+  syntax-highlight:
+    label: Resaltado de sintaxis
+    js: JavaScript (script items, preprocessing)
+    expression: Expresiones (triggers, elementos calculados)
+  user:
+    section:
+      global-rules: Reglas globales de etiquetas de color
+      my-overrides: Mis sobrescrituras
+    override-colortags: Usar mis propias reglas para colores de etiquetas
+    load-global: Cargar configuración global
+    no-global-rules: No hay reglas globales definidas.
+    collision-info: 'Una fila con la misma Coincidencia + Cadena que una regla global sobrescribe su color. Las filas con nuevas combinaciones de Coincidencia + Cadena se añaden a las reglas globales.'
+  button:
+    update: Actualizar
+hints:
+  windrag: 'Permite arrastrar diálogos modales sujetándolos por la barra de título con el ratón. Pensado principalmente para Zabbix 7.0, que no admite esta función de forma nativa — Zabbix 7.4 ya incluye el arrastre de modales de serie.'
+  latest-show-disabled: 'Muestra los elementos deshabilitados en Monitoring → Latest data. Las filas de elementos deshabilitados aparecen en gris con un icono ''D'' en la columna Info.'
+  hide-widget-header: 'En los widgets con „Show header" desmarcado, la cabecera se oculta por completo — tampoco aparece al pasar el ratón. La cabecera vuelve a mostrarse solo cuando el dashboard se cambia al modo edición.'
+  compact-dashboard: 'Elimina el espaciado alrededor de los widgets para que queden pegados entre sí. Ahorra espacio en dashboards densos y ofrece un aspecto más compacto.'
+  color-theme: 'Color de fondo personalizado para la página y/o la barra lateral. Útil para distinguir visualmente varias instancias de Zabbix de un vistazo.'
+  modal-width: 'Define un ancho mínimo en píxeles para los diálogos modales. Útil cuando el tamaño por defecto resulta demasiado estrecho para el contenido del diálogo.'
+  custom-font: "Carga una fuente personalizada (mediante URL de Google Fonts o archivo de fuente subido) y la aplica en toda la interfaz de Zabbix.\nURL de ejemplo: https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap"
+  color-tags: 'Las etiquetas en toda la UI se colorean según tus reglas — facilita identificarlas de un vistazo.'
+  syntax-highlight: 'Resaltado de sintaxis para scripts JavaScript (elementos de script, preprocesado) y expresiones de Zabbix (triggers, elementos calculados) en los editores.'
+  allow-user-override: 'Cuando está activado, los usuarios pueden definir en My uxMAX sus propias reglas para colores de etiquetas, aplicadas encima de las globales. Cuando está desactivado, solo se aplican las reglas globales y el menú My uxMAX se oculta a los usuarios.'

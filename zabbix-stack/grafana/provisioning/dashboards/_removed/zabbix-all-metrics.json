@@ -1,0 +1,161 @@
+{
+ "annotations": {
+  "list": []
+ },
+ "description": "One panel per Zabbix metric, filtered by host. Panels auto-repeat over every item the selected host(s) report. Data via native connector → VictoriaMetrics.",
+ "editable": true,
+ "graphTooltip": 1,
+ "panels": [
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "victoriametrics"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "color": {
+      "mode": "palette-classic"
+     },
+     "custom": {
+      "axisCenteredZero": false,
+      "axisColorMode": "text",
+      "axisPlacement": "auto",
+      "drawStyle": "line",
+      "fillOpacity": 12,
+      "gradientMode": "opacity",
+      "lineInterpolation": "smooth",
+      "lineWidth": 2,
+      "pointSize": 5,
+      "showPoints": "never",
+      "spanNulls": true,
+      "thresholdsStyle": {
+       "mode": "off"
+      }
+     },
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       }
+      ]
+     },
+     "unit": "short"
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 8,
+    "w": 12,
+    "x": 0,
+    "y": 0
+   },
+   "id": 1,
+   "options": {
+    "legend": {
+     "calcs": [
+      "last",
+      "mean",
+      "max"
+     ],
+     "displayMode": "table",
+     "placement": "bottom",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "repeat": "metric",
+   "repeatDirection": "h",
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "victoriametrics"
+     },
+     "expr": "{__name__=~\"$metric\", host=~\"$host\"}",
+     "legendFormat": "{{host}}",
+     "refId": "A"
+    }
+   ],
+   "title": "$metric",
+   "type": "timeseries"
+  }
+ ],
+ "refresh": "30s",
+ "schemaVersion": 38,
+ "tags": [
+  "zabbix",
+  "all-metrics",
+  "per-metric"
+ ],
+ "templating": {
+  "list": [
+   {
+    "allValue": ".*",
+    "current": {},
+    "datasource": {
+     "type": "prometheus",
+     "uid": "victoriametrics"
+    },
+    "definition": "label_values(host)",
+    "description": "Host filter. Pick one or more hosts; every panel below is filtered to them.",
+    "hide": 0,
+    "includeAll": true,
+    "label": "Host",
+    "multi": true,
+    "name": "host",
+    "options": [],
+    "query": {
+     "query": "label_values(host)",
+     "refId": "StandardVariableQuery"
+    },
+    "refresh": 2,
+    "regex": "/^(?!$).+/",
+    "skipUrlSync": false,
+    "sort": 1,
+    "type": "query"
+   },
+   {
+    "allValue": ".*",
+    "current": {
+     "selected": true,
+     "text": ["CPU utilization", "Memory utilization", "Load average (1m avg)"],
+     "value": ["CPU utilization", "Memory utilization", "Load average (1m avg)"]
+    },
+    "datasource": {
+     "type": "prometheus",
+     "uid": "victoriametrics"
+    },
+    "definition": "label_values({host=~\"$host\"}, __name__)",
+    "description": "Which metrics get their own panel. Narrows to items reported by the selected host(s). Choose 'All' to render a panel for every metric.",
+    "hide": 0,
+    "includeAll": true,
+    "label": "Metrics (panels)",
+    "multi": true,
+    "name": "metric",
+    "options": [],
+    "query": {
+     "query": "label_values({host=~\"$host\"}, __name__)",
+     "refId": "StandardVariableQuery"
+    },
+    "refresh": 2,
+    "regex": "",
+    "skipUrlSync": false,
+    "sort": 1,
+    "type": "query"
+   }
+  ]
+ },
+ "time": {
+  "from": "now-6h",
+  "to": "now"
+ },
+ "timepicker": {},
+ "title": "Zabbix All Metrics (Per-Panel)",
+ "uid": "zabbix-all-metrics",
+ "version": 1
+}

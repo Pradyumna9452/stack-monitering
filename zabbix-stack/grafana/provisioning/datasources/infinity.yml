@@ -1,0 +1,25 @@
+apiVersion: 1
+
+# Infinity datasource used ONLY for the SLA report. It calls the Zabbix JSON-RPC
+# API (sla.getsli / sla.get / service.get) directly so Grafana shows Zabbix's
+# authoritative SLA numbers, identical to the native Services -> SLA report.
+# This is deliberately NOT routed through VictoriaMetrics: the computed SLI lives
+# only inside the Zabbix SLA engine and is not carried by the native connector.
+deleteDatasources:
+  - name: Zabbix SLA (Infinity)
+    orgId: 1
+
+datasources:
+  - name: Zabbix SLA (Infinity)
+    uid: zabbix-sla-infinity
+    type: yesoreyeram-infinity-datasource
+    access: proxy
+    isDefault: false
+    editable: true
+    jsonData:
+      auth_method: bearerToken
+      allowedHosts:
+        - http://zabbix-web:8080
+      timeoutInSeconds: 60
+    secureJsonData:
+      bearerToken: ${ZABBIX_API_TOKEN}

@@ -1,0 +1,970 @@
+{
+  "id": null,
+  "uid": "device-performance-status",
+  "title": "Overall Device Status",
+  "tags": [
+    "zabbix",
+    "status",
+    "performance"
+  ],
+  "style": "dark",
+  "timezone": "browser",
+  "refresh": "30s",
+  "time": {
+    "from": "now-5m",
+    "to": "now"
+  },
+  "timepicker": {},
+  "schemaVersion": 38,
+  "version": 1,
+  "links": [
+    {
+      "title": "Host Availability Report",
+      "url": "/grafana/d/host-availability-report",
+      "type": "link",
+      "icon": "external link",
+      "targetBlank": false
+    }
+  ],
+  "annotations": {
+    "list": []
+  },
+  "templating": {
+    "list": [
+      {
+        "name": "host_group",
+        "type": "query",
+        "label": "Host Group",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "victoriametrics"
+        },
+        "query": "label_values(host_groups)",
+        "regex": "/,(.+),/",
+        "allValue": ".*",
+        "includeAll": true,
+        "multi": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "sort": 1,
+        "refresh": 2
+      },
+      {
+        "name": "site",
+        "type": "query",
+        "label": "Site",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "victoriametrics"
+        },
+        "query": "label_values(site)",
+        "allValue": ".*",
+        "includeAll": true,
+        "multi": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "sort": 1,
+        "refresh": 2
+      },
+      {
+        "name": "host_type",
+        "type": "query",
+        "label": "Device Type",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "victoriametrics"
+        },
+        "query": "label_values(host_type)",
+        "allValue": ".*",
+        "includeAll": true,
+        "multi": false,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "sort": 1,
+        "refresh": 2
+      },
+      {
+        "name": "host",
+        "type": "query",
+        "label": "Host",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "victoriametrics"
+        },
+        "query": "label_values({host_type=~\".+\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}, host)",
+        "allValue": ".+",
+        "includeAll": true,
+        "multi": true,
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "sort": 1,
+        "refresh": 2
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "row",
+      "title": "Fleet Summary",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "collapsed": false,
+      "panels": []
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Total Devices",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "displayName": "Total Devices",
+          "unit": "short",
+          "decimals": 0,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#1F60C4",
+                "value": null
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "textMode": "value",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "expr": "count(group by(host, host_type, site, role, host_groups)(last_over_time({host_type=~\".+\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m])))",
+          "legendFormat": "",
+          "refId": "A",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          }
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Avg Memory Util",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 1
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "displayName": "Avg Memory Util",
+          "unit": "percent",
+          "decimals": 2,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "textMode": "value",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "expr": "avg(max by(host) (last_over_time({__name__=~\"Memory [Uu]tilization\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]) or last_over_time({__name__=~\"Memory [Uu]tilization\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m])))",
+          "legendFormat": "",
+          "refId": "A",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          }
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Max Memory Util",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 1
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "displayName": "Max Memory Util",
+          "unit": "percent",
+          "decimals": 2,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 85
+              },
+              {
+                "color": "red",
+                "value": 95
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "textMode": "value",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "expr": "max(max by(host) (last_over_time({__name__=~\"Memory [Uu]tilization\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]) or last_over_time({__name__=~\"Memory [Uu]tilization\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m])))",
+          "legendFormat": "",
+          "refId": "A",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          }
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "Avg CPU Util",
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 1
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "displayName": "Avg CPU Util",
+          "unit": "percent",
+          "decimals": 2,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "textMode": "value",
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "center",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        }
+      },
+      "targets": [
+        {
+          "expr": "avg(max by(host) (last_over_time({__name__=~\"CPU [Uu]tilization\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]) and on(host) group by(host, host_type, site, role, host_groups)(last_over_time({host_type=~\".+\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]))))",
+          "legendFormat": "",
+          "refId": "A",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          }
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "type": "row",
+      "title": "Device Status",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "collapsed": false,
+      "panels": []
+    },
+    {
+      "id": 7,
+      "type": "table",
+      "title": "Device Status",
+      "gridPos": {
+        "h": 20,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "decimals": 2,
+          "custom": {
+            "align": "left",
+            "displayMode": "auto"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Hostname"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 220
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "IP Address"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 130
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Utilization"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "custom.width",
+                "value": 170
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 75
+                    },
+                    {
+                      "color": "red",
+                      "value": 90
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Utilization"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 70
+                    },
+                    {
+                      "color": "red",
+                      "value": 90
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "System Uptime"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dtdhms"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              },
+              {
+                "id": "custom.width",
+                "value": 210
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "auto"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Disk Utilization"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-background"
+              },
+              {
+                "id": "custom.width",
+                "value": 150
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "orange",
+                      "value": 75
+                    },
+                    {
+                      "color": "red",
+                      "value": 90
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Memory Utilization"
+          }
+        ],
+        "footer": {
+          "show": true,
+          "reducer": [
+            "mean"
+          ],
+          "fields": [
+            "Memory Utilization",
+            "CPU Utilization",
+            "Disk Utilization"
+          ],
+          "enablePagination": false
+        }
+      },
+      "transformations": [
+        {
+          "id": "joinByField",
+          "options": {
+            "byField": "host",
+            "mode": "outer"
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "__name__": true,
+              "host_name": true,
+              "host_groups": true,
+              "host_type": true,
+              "role": true,
+              "item": true,
+              "source": true,
+              "Value #E": true
+            },
+            "indexByName": {
+              "host": 0,
+              "host_ip": 1,
+              "Value #A": 2,
+              "Value #B": 3,
+              "Value #C": 4,
+              "Value #D": 5
+            },
+            "renameByName": {
+              "host": "Hostname",
+              "host_ip": "IP Address",
+              "Value #A": "Memory Utilization",
+              "Value #B": "CPU Utilization",
+              "Value #C": "System Uptime",
+              "Value #D": "Disk Utilization"
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "fields": [
+              {
+                "desc": true,
+                "displayName": "Memory Utilization"
+              }
+            ]
+          }
+        }
+      ],
+      "targets": [
+        {
+          "expr": "max by(host) (last_over_time({__name__=~\"Memory [Uu]tilization\", host=~\"$host\"}[5m]) or last_over_time({__name__=~\"Memory [Uu]tilization\", host=~\"$host\"}[5m])) and on(host) group by(host, host_ip, host_type, site, role, host_groups)(last_over_time({host_ip=~\".+\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]))",
+          "legendFormat": "",
+          "refId": "A",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          }
+        },
+        {
+          "expr": "max by(host) (last_over_time({__name__=~\"CPU [Uu]tilization\", host=~\"$host\"}[5m])) and on(host) group by(host, host_ip, host_type, site, role, host_groups)(last_over_time({host_ip=~\".+\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]))",
+          "legendFormat": "",
+          "refId": "B",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          }
+        },
+        {
+          "expr": "max by(host) (last_over_time({__name__=~\"System uptime|Uptime|Device uptime|Uptime \\\\(network\\\\)|Uptime \\\\(hardware\\\\)\", host=~\"$host\"}[5m])) and on(host) group by(host, host_ip, host_type, site, role, host_groups)(last_over_time({host_ip=~\".+\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]))",
+          "legendFormat": "",
+          "refId": "C",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          }
+        },
+        {
+          "expr": "max by(host) (last_over_time({__name__=~\"FS \\\\[.*\\\\]: Space: Used, in %\", host=~\"$host\"}[5m])) and on(host) group by(host, host_ip, host_type, site, role, host_groups)(last_over_time({host_ip=~\".+\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]))",
+          "legendFormat": "",
+          "refId": "D",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          }
+        },
+        {
+          "expr": "group by(host, host_ip, host_type, site, role, host_groups)(last_over_time({host_ip=~\".+\", host=~\"$host\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]))",
+          "legendFormat": "",
+          "refId": "E",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          }
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "type": "row",
+      "title": "Utilization by Device Type",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 26
+      },
+      "collapsed": false,
+      "panels": []
+    },
+    {
+      "id": 9,
+      "type": "barchart",
+      "title": "Avg Memory by Type",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 0,
+        "y": 27
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 2,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "lineWidth": 0,
+            "axisPlacement": "auto"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xTickLabelRotation": 0,
+        "barWidth": 0.6,
+        "groupWidth": 0.7,
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "targets": [
+        {
+          "expr": "avg by(host_type) (  (max by(host) (last_over_time({__name__=~\"Memory [Uu]tilization\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]) or   last_over_time({__name__=~\"Memory [Uu]tilization\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]))  * on(host) group_left(host_type) group by(host, host_type, site, role, host_groups)(last_over_time({host_type=~\".+\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]))))",
+          "legendFormat": "{{host_type}}",
+          "refId": "A",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          }
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "type": "barchart",
+      "title": "Avg CPU by Type",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 8,
+        "y": 27
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 2,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "lineWidth": 0,
+            "axisPlacement": "auto"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xTickLabelRotation": 0,
+        "barWidth": 0.6,
+        "groupWidth": 0.7,
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "targets": [
+        {
+          "expr": "avg by(host_type) (  max by(host) (last_over_time({__name__=~\"CPU [Uu]tilization\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]))  * on(host) group_left(host_type) group by(host, host_type, site, role, host_groups)(last_over_time({host_type=~\".+\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m])))",
+          "legendFormat": "{{host_type}}",
+          "refId": "A",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          }
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "type": "barchart",
+      "title": "Avg Disk Util by Type",
+      "gridPos": {
+        "h": 8,
+        "w": 8,
+        "x": 16,
+        "y": 27
+      },
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 2,
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 75
+              },
+              {
+                "color": "red",
+                "value": 90
+              }
+            ]
+          },
+          "custom": {
+            "fillOpacity": 80,
+            "lineWidth": 0,
+            "axisPlacement": "auto"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "auto",
+        "xTickLabelRotation": 0,
+        "barWidth": 0.6,
+        "groupWidth": 0.7,
+        "stacking": "none",
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        },
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        }
+      },
+      "targets": [
+        {
+          "expr": "avg by(host_type) (  max by(host) (last_over_time({__name__=~\"FS \\\\[.*\\\\]: Space: Used, in %\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m]))  * on(host) group_left(host_type) group by(host, host_type, site, role, host_groups)(last_over_time({host_type=~\".+\", host_groups=~\".*$host_group.*\", host_type=~\"$host_type\", site=~\"$site\"}[5m])))",
+          "legendFormat": "{{host_type}}",
+          "refId": "A",
+          "instant": true,
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          }
+        }
+      ]
+    }
+  ]
+}

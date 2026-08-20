@@ -1,0 +1,179 @@
+global:
+  scrape_interval: 30s
+
+scrape_configs:
+
+  # VictoriaMetrics self-monitoring
+  - job_name: 'victoriametrics'
+    static_configs:
+      - targets: ['victoriametrics:8428']
+    metrics_path: /metrics
+
+  # Grafana internal metrics
+  - job_name: 'grafana'
+    basic_auth:
+      username: admin
+      password: admin
+    static_configs:
+      - targets: ['grafana:3000']
+    metrics_path: /grafana/metrics
+
+  # vmagent self-monitoring
+  - job_name: 'vmagent'
+    static_configs:
+      - targets: ['vmagent:8429']
+    metrics_path: /metrics
+
+  # Custom Reporting Portal metrics
+  - job_name: 'reporting-portal'
+    static_configs:
+      - targets: ['reporting-portal:5000']
+    metrics_path: /metrics
+
+  # GLPI Exporter internal metrics
+  - job_name: 'glpi-exporter'
+    static_configs:
+      - targets: ['glpi-exporter:8000']
+    metrics_path: /metrics
+
+  # ===========================================================================
+  # SNMP Exporter — interface metrics for all managed switches and firewalls.
+  # Multi-target pattern: each device IP is passed as ?target= to snmp-exporter.
+  # Metrics: ifHCIn/OutOctets, ifOperStatus, ifAdminStatus, ifIn/OutErrors,
+  #          ifIn/OutDiscards, ifHighSpeed — labeled with ifName and ifAlias.
+  # Update community string in snmp-exporter/snmp.yml if not "public".
+  # ===========================================================================
+
+  - job_name: snmp_switches
+    scrape_interval: 60s
+    scrape_timeout: 45s
+    metrics_path: /snmp
+    params:
+      module: [if_mib]
+      auth: [public_v2]
+    static_configs:
+      - targets: ['10.95.0.204']
+        labels: {device_name: 'Core development Switch Primary', site: SONIC, role: Core-Switch, host_type: Switch}
+      - targets: ['10.94.0.15']
+        labels: {device_name: 'Core HO VDI Switch Primary', site: HO, role: Core-Switch, host_type: Switch}
+      - targets: ['10.94.0.16']
+        labels: {device_name: 'Core HO VDI Switch Secondary', site: HO, role: Core-Switch, host_type: Switch}
+      - targets: ['10.94.0.240']
+        labels: {device_name: 'Dept Core Switch Primary', site: HO, role: Core-Switch, host_type: Switch}
+      - targets: ['10.94.0.241']
+        labels: {device_name: 'Dept Core Switch Secondary', site: HO, role: Core-Switch, host_type: Switch}
+      - targets: ['10.94.0.35']
+        labels: {device_name: 'Dept Switch 01', site: HO, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.94.0.36']
+        labels: {device_name: 'Dept Switch 02', site: HO, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.94.0.37']
+        labels: {device_name: 'Dept Switch 03', site: HO, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.94.0.38']
+        labels: {device_name: 'Dept Switch 04', site: HO, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.94.0.39']
+        labels: {device_name: 'Dept Switch 05', site: HO, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.94.0.40']
+        labels: {device_name: 'Dept Switch 06', site: HO, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.94.0.41']
+        labels: {device_name: 'Dept Switch 07', site: HO, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.94.0.42']
+        labels: {device_name: 'Dept Switch 08', site: HO, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.94.0.43']
+        labels: {device_name: 'Dept Switch 09 standby', site: HO, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.98.0.71']
+        labels: {device_name: 'Dispatch Department', site: MDEEP, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.94.0.44']
+        labels: {device_name: 'HO_WiFi Switch 10 standby', site: HO, role: WiFi-Switch, host_type: Switch}
+      - targets: ['10.94.0.30']
+        labels: {device_name: 'HO_WiFi Uplink', site: HO, role: WiFi-Switch, host_type: Switch}
+      - targets: ['10.98.0.6']
+        labels: {device_name: 'Mdeep_Core Secondary', site: MDEEP, role: Core-Switch, host_type: Switch}
+      - targets: ['10.98.0.15']
+        labels: {device_name: 'Mdeep_core_Primary1', site: MDEEP, role: Core-Switch, host_type: Switch}
+      - targets: ['10.98.0.7']
+        labels: {device_name: 'Mdeep_Department Primary', site: MDEEP, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.98.0.8']
+        labels: {device_name: 'Mdeep_Department Secondary', site: MDEEP, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.98.0.18']
+        labels: {device_name: 'Mdeep_Fiber Primary', site: MDEEP, role: Fiber-Switch, host_type: Switch}
+      - targets: ['10.98.0.9']
+        labels: {device_name: 'Mdeep_Fiber-Secondary', site: MDEEP, role: Fiber-Switch, host_type: Switch}
+      - targets: ['10.97.0.249']
+        labels: {device_name: 'Msour_CCTV', site: MSOUR, role: CCTV-Switch, host_type: Switch}
+      - targets: ['10.97.0.250']
+        labels: {device_name: 'Msour_core Primary', site: MSOUR, role: Core-Switch, host_type: Switch}
+      - targets: ['10.97.0.254']
+        labels: {device_name: 'Msour_core switch secondary', site: MSOUR, role: Core-Switch, host_type: Switch}
+      - targets: ['10.97.0.247']
+        labels: {device_name: 'Msour_Department_Primary', site: MSOUR, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.97.0.251']
+        labels: {device_name: 'Msour_Fiber Primary', site: MSOUR, role: Fiber-Switch, host_type: Switch}
+      - targets: ['10.97.0.248']
+        labels: {device_name: 'Msour_Fiber_Secondary', site: MSOUR, role: Fiber-Switch, host_type: Switch}
+      - targets: ['10.97.0.253']
+        labels: {device_name: 'Msour_Standby_Switch', site: MSOUR, role: Core-Switch, host_type: Switch}
+      - targets: ['10.95.0.58']
+        labels: {device_name: 'San Switch primary', site: SONIC, role: SAN-Switch, host_type: Switch}
+      - targets: ['10.95.0.59']
+        labels: {device_name: 'San Switch secondary', site: SONIC, role: SAN-Switch, host_type: Switch}
+      - targets: ['10.96.0.252']
+        labels: {device_name: 'SEZ_Core_Primary1', site: SEZ, role: Core-Switch, host_type: Switch}
+      - targets: ['10.96.0.254']
+        labels: {device_name: 'SEZ_Core_Secondary', site: SEZ, role: Core-Switch, host_type: Switch}
+      - targets: ['10.96.0.253']
+        labels: {device_name: 'SEZ_Department_Primary', site: SEZ, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.96.0.251']
+        labels: {device_name: 'SEZ_Department_Secondary', site: SEZ, role: Dept-Switch, host_type: Switch}
+      - targets: ['10.95.0.205']
+        labels: {device_name: 'SONIC_Core_Switch_Secondary', site: SONIC, role: Core-Switch, host_type: Switch}
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp-exporter:9116
+
+  # SNMPv2c firewalls
+  - job_name: snmp_firewalls_v2
+    scrape_interval: 60s
+    scrape_timeout: 45s
+    metrics_path: /snmp
+    params:
+      module: [if_mib]
+      auth: [public_v2]
+    static_configs:
+      - targets: ['10.96.0.200']
+        labels: {device_name: 'SEZ_Pithampur_Primary_FW', site: SEZ, role: Primary-FW, host_type: Firewall}
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp-exporter:9116
+
+  # SNMPv3 firewalls (FortiGate + Sophos)
+  - job_name: snmp_firewalls_v3
+    scrape_interval: 60s
+    scrape_timeout: 45s
+    metrics_path: /snmp
+    params:
+      module: [if_mib]
+      auth: [snmpv3_firewall]
+    static_configs:
+      - targets: ['10.97.0.200']
+        labels: {device_name: 'FGT-60F-MSour-Secondary_FW', site: MSOUR, role: Secondary-FW, host_type: Firewall}
+      - targets: ['10.98.0.200']
+        labels: {device_name: 'FortiGate-60F-Mdeep_Primary', site: MDEEP, role: Primary-FW, host_type: Firewall}
+      - targets: ['10.94.0.200']
+        labels: {device_name: 'HO_Primary_Firewall', site: HO, role: Primary-FW, host_type: Firewall}
+      - targets: ['10.94.0.10']
+        labels: {device_name: 'HO_SOPHOS_INTERNET_PROXY_FW1', site: HO, role: Internet-Proxy, host_type: Firewall}
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: snmp-exporter:9116

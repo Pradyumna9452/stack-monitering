@@ -1,0 +1,76 @@
+module:
+  name: uxMAX
+menu:
+  uxmax-configuration: 'UI Einstellungen'
+  uxmax-user-preferences: Mein uxMAX
+tabs:
+  general: Allgemein
+form:
+  section:
+    dashboards: Dashboards
+    interface: UI-Verhalten
+    appearance: Erscheinungsbild
+    color-tags: Farbige Tags
+    syntax-highlighting: Syntax-Hervorhebung
+  enable-dragging-of-modal-windows: Verschiebbare modale Fenster
+  latest-show-disabled-items: Deaktivierte Items in „Latest data" anzeigen
+  hide-widget-header: Widget-Kopfzeile außerhalb des Bearbeitungsmodus ausblenden
+  compact-dashboard: Kompaktes Dashboard
+  allow-user-override: Eigene Regeln für farbige Tags je Benutzer erlauben
+  custom-color-theme: Benutzerdefiniertes Farbschema
+  body-background-color: Hintergrundfarbe der Seite
+  navigation-background-color: Hintergrundfarbe der Seitenleiste
+  modal-window-minimal-width:
+    label: Mindestbreite modaler Fenster
+    button:
+      open: Öffnen
+  custom-font:
+    label: Benutzerdefinierte Schriftart
+    button:
+      add: Hinzufügen
+      remove: Entfernen
+    variant:
+      use-external-css: Externes CSS verwenden
+      upload-font-file: Schriftdatei hochladen
+      google-font-url: Google-Font-URL
+    hint:
+      store-font-locally: Schriftart lokal speichern
+      supported-formats: 'Unterstützte Formate: woff, woff2, ttf, otf, eot'
+  color-tags:
+    label: Farbige Tags
+    table:
+      match: Übereinstimmung
+      string: Zeichenkette
+    button:
+      add: Hinzufügen
+      remove: Entfernen
+    match:
+      starts-with: Beginnt mit
+      contains: Enthält
+      ends-with: Endet mit
+    value: Wert
+  syntax-highlight:
+    label: Syntax-Hervorhebung
+    js: JavaScript (script items, preprocessing)
+    expression: Ausdrücke (Trigger, berechnete Items)
+  user:
+    section:
+      global-rules: Globale Regeln für farbige Tags
+      my-overrides: Meine Überschreibungen
+    override-colortags: Eigene Regeln für Tag-Farben verwenden
+    load-global: Globale Einstellungen laden
+    no-global-rules: Keine globalen Regeln definiert.
+    collision-info: 'Eine Zeile mit derselben Kombination aus Übereinstimmung + Zeichenkette wie eine globale Regel überschreibt deren Farbe. Zeilen mit neuen Kombinationen werden zusätzlich zu den globalen Regeln angewendet.'
+  button:
+    update: Aktualisieren
+hints:
+  windrag: 'Erlaubt das Verschieben modaler Dialoge durch Ziehen an der Titelleiste mit der Maus. Hauptsächlich für Zabbix 7.0 gedacht, das diese Funktion nicht nativ unterstützt — Zabbix 7.4 bringt das Verschieben modaler Dialoge bereits ab Werk mit.'
+  latest-show-disabled: 'Zeigt deaktivierte Items in Monitoring → Latest data an. Zeilen deaktivierter Items erscheinen ausgegraut mit dem Symbol ''D'' in der Info-Spalte.'
+  hide-widget-header: 'Bei Widgets mit deaktiviertem „Show header" wird die Kopfzeile vollständig ausgeblendet — sie erscheint auch beim Überfahren mit der Maus nicht. Die Kopfzeile wird nur sichtbar, wenn das Dashboard in den Bearbeitungsmodus wechselt.'
+  compact-dashboard: 'Entfernt die Abstände um die Widgets, sodass sie bündig aneinanderliegen. Spart Platz auf dicht belegten Dashboards und sorgt für ein kompakteres Erscheinungsbild.'
+  color-theme: 'Benutzerdefinierte Hintergrundfarbe für die Seite und/oder die Seitenleiste. Nützlich, um mehrere Zabbix-Instanzen auf einen Blick visuell zu unterscheiden.'
+  modal-width: 'Legt eine Mindestbreite in Pixeln für modale Dialoge fest. Hilfreich, wenn die Standardgröße für den Dialoginhalt zu schmal ist.'
+  custom-font: "Lädt eine benutzerdefinierte Schriftart (über Google-Fonts-URL oder hochgeladene Schriftdatei) und wendet sie in der gesamten Zabbix-Oberfläche an.\nBeispiel-URL: https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap"
+  color-tags: 'Tags in der gesamten Oberfläche werden gemäß Ihren Regeln eingefärbt — leichter auf einen Blick zu erfassen.'
+  syntax-highlight: 'Syntax-Hervorhebung für JavaScript-Skripte (Script-Items, Preprocessing) und Zabbix-Ausdrücke (Trigger, berechnete Items) in Editoren.'
+  allow-user-override: 'Wenn aktiviert, können Benutzer in My uxMAX eigene Regeln für Tag-Farben definieren, die zusätzlich zu den globalen angewendet werden. Wenn deaktiviert, gelten nur die globalen Regeln und das Menü My uxMAX wird für die Benutzer ausgeblendet.'

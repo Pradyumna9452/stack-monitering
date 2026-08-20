@@ -1,0 +1,25 @@
+{
+	"manifest_version": 2.0,
+	"id": "sonic_overview",
+	"type": "widget",
+	"name": "SONIC Site Overview",
+	"namespace": "SonicOverview",
+	"version": "1.0",
+	"widget": {
+		"js_class": "CWidgetSonicOverview",
+		"size": {
+			"width": 24,
+			"height": 28
+		},
+		"refresh_rate": 30
+	},
+	"actions": {
+		"widget.sonic_overview.view": {
+			"class": "WidgetView"
+		}
+	},
+	"assets": {
+		"js": ["class.widget.sonicoverview.js"],
+		"css": ["widget.css"]
+	}
+}

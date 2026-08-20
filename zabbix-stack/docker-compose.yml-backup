@@ -1,0 +1,309 @@
+version: '3.8'
+
+services:
+  # ===========================================
+  # 1. PostgreSQL (Zabbix Database)
+  # ===========================================
+  postgres:
+    image: timescale/timescaledb:latest-pg15
+    container_name: zabbix-postgres
+    environment:
+      - POSTGRES_USER=zabbix
+      - POSTGRES_PASSWORD=${ZABBIX_DB_PASSWORD:-zabbix_password}
+      - POSTGRES_DB=zabbix
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - zabbix-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U zabbix"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ===========================================
+  # 2. Zabbix Server (Native Connector Enabled)
+  # ===========================================
+  zabbix-server:
+    image: zabbix/zabbix-server-pgsql:7.4-alpine-latest
+    container_name: zabbix-server
+    environment:
+      - DB_SERVER_HOST=postgres
+      - POSTGRES_USER=zabbix
+      - POSTGRES_PASSWORD=${ZABBIX_DB_PASSWORD:-zabbix_password}
+      - POSTGRES_DB=zabbix
+      - ZBX_WEBSERVICEURL=http://zabbix-web-service:10053/report
+      - ZBX_STARTCONNECTORS=1 
+    ports:
+      - "10051:10051"
+    networks:
+      - zabbix-net
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  # ===========================================
+  # 3. Zabbix Web Frontend
+  # ===========================================
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-pgsql:7.4-alpine-latest
+    container_name: zabbix-web
+    environment:
+      - DB_SERVER_HOST=postgres
+      - POSTGRES_USER=zabbix
+      - POSTGRES_PASSWORD=${ZABBIX_DB_PASSWORD:-zabbix_password}
+      - POSTGRES_DB=zabbix
+      - ZBX_SERVER_HOST=zabbix-server
+      - PHP_TZ=${TIMEZONE:-Asia/Kolkata}
+    networks:
+      - zabbix-net
+    depends_on:
+      - zabbix-server
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ===========================================
+  # 4. Zabbix Web Service (Reports)
+  # ===========================================
+  zabbix-web-service:
+    image: zabbix/zabbix-web-service:7.4-alpine-latest
+    container_name: zabbix-web-service
+    networks:
+      - zabbix-net
+    restart: unless-stopped
+
+  # ===========================================
+  # 5. Zabbix Agent
+  # ===========================================
+  zabbix-agent:
+    image: zabbix/zabbix-agent2:7.4-alpine-latest
+    container_name: zabbix-agent
+    environment:
+      - ZBX_SERVER_HOST=zabbix-server
+      - ZBX_HOSTNAME=zabbix-server
+    networks:
+      - zabbix-net
+    depends_on:
+      - zabbix-server
+    restart: unless-stopped
+
+  # ===========================================
+  # 6. GLPI MariaDB
+  # ===========================================
+  glpi-mariadb:
+    image: mariadb:10.11
+    container_name: glpi-mariadb
+    environment:
+      - MARIADB_ROOT_PASSWORD=${GLPI_DB_ROOT_PASSWORD:-glpi_root_password}
+      - MARIADB_DATABASE=glpi
+      - MARIADB_USER=glpi
+      - MARIADB_PASSWORD=${GLPI_DB_PASSWORD:-glpi_password}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - glpi_mariadb_data:/var/lib/mysql
+    networks:
+      - zabbix-net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ===========================================
+  # 7. GLPI
+  # ===========================================
+  glpi:
+    image: diouxx/glpi:latest
+    container_name: glpi
+    environment:
+      - TIMEZONE=${TIMEZONE:-Asia/Kolkata}
+    volumes:
+      - glpi_data:/var/www/html/glpi
+    networks:
+      - zabbix-net
+    depends_on:
+      - glpi-mariadb
+    restart: unless-stopped
+
+  # ===========================================
+  # 8. GLPI Integration Service
+  # ===========================================
+  glpi-webhook:
+    build:
+      context: ./zabbix-glpi-integration
+      dockerfile: Dockerfile
+    image: zabbix-glpi-integration:latest
+    container_name: glpi-webhook
+    environment:
+      - GLPI_URL=http://glpi:80/apirest.php
+      - GLPI_USER=glpi
+      - GLPI_PASSWORD=glpi
+      - GLPI_APP_TOKEN=${GLPI_APP_TOKEN:-}
+      - GLPI_USER_TOKEN=${GLPI_USER_TOKEN:-}
+      - GLPI_ENTITY_ID=0
+      - ZABBIX_URL=http://zabbix-web:8080/api_jsonrpc.php
+      - ZABBIX_USER=Admin
+      - ZABBIX_PASSWORD=${ZABBIX_PASSWORD:-zabbix}
+      - WEBHOOK_PORT=5002
+      - WEBHOOK_HOST=0.0.0.0
+      - DATABASE_PATH=/data/zabbix_glpi.db
+      - TZ=${TIMEZONE:-Asia/Kolkata}
+    volumes:
+      - ./zabbix-glpi-integration:/app:ro
+      - glpi_integration_data:/data
+    ports:
+      - "5002:5002"
+    networks:
+      - zabbix-net
+    depends_on:
+      - zabbix-server
+      - zabbix-web
+      - glpi
+    restart: unless-stopped
+    command: >
+      sh -c "pip install --no-cache-dir -q flask requests gunicorn &&
+             python -c 'from database import init_database; init_database()' &&
+             gunicorn --bind 0.0.0.0:5002 --workers 2 --threads 4 --timeout 30 --access-logfile - --error-logfile - webhook_server:app"
+
+  # ===========================================
+  # 9. VictoriaMetrics (Safe Flags)
+  # ===========================================
+  victoriametrics:
+    image: victoriametrics/victoria-metrics:latest
+    container_name: victoriametrics
+    volumes:
+      - victoriametrics_data:/victoria-metrics-data
+    ports:
+      - "8428:8428"
+    networks:
+      - zabbix-net
+    restart: unless-stopped
+    # Removed -zabbix.addGroupsValue as it is not recognized by your current version
+    command:
+      - '-storageDataPath=/victoria-metrics-data'
+      - '-retentionPeriod=12'
+      - '-search.disableAutoCacheReset=true' 
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8428/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+
+  # ===========================================
+  # 10. Grafana
+  # ===========================================
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+      - GF_SERVER_HTTP_ADDR=0.0.0.0
+      - GF_SERVER_ROOT_URL=https://10.20.31.32/grafana/
+      - GF_SERVER_SERVE_FROM_SUB_PATH=true
+      - GF_INSTALL_PLUGINS=grafana-clock-panel,grafana-piechart-panel
+      - GF_METRICS_ENABLED=true
+      - GF_METRICS_BASIC_AUTH_USERNAME=admin
+      - GF_METRICS_BASIC_AUTH_PASSWORD=${GRAFANA_ADMIN_PASSWORD:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/datasources:/etc/grafana/provisioning/datasources:ro
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards:ro
+    networks:
+      - zabbix-net
+    restart: unless-stopped
+
+  # ===========================================
+  # 11. VMAgent (Metrics Scraper)
+  # ===========================================
+  vmagent:
+    image: victoriametrics/vmagent:latest
+    container_name: vmagent
+    volumes:
+      - ./vmagent/scrape.yml:/etc/vmagent/scrape.yml:ro
+      - vmagent_data:/vmagentdata
+    command:
+      - '-promscrape.config=/etc/vmagent/scrape.yml'
+      - '-remoteWrite.url=http://victoriametrics:8428/api/v1/write'
+    networks:
+      - zabbix-net
+    depends_on:
+      - victoriametrics
+      - grafana
+    restart: unless-stopped
+
+  # ===========================================
+  # 12. GLPI Exporter
+  # ===========================================
+  glpi-exporter:
+    image: python:3.11-slim
+    container_name: glpi-exporter
+    working_dir: /app
+    environment:
+      - GLPI_URL=http://glpi:80/apirest.php
+      - GLPI_USER=glpi
+      - GLPI_PASSWORD=glpi
+      - VM_URL=http://victoriametrics:8428
+      - EXPORT_INTERVAL=30
+    volumes:
+      - ./glpi-exporter:/app:ro
+    networks:
+      - zabbix-net
+    depends_on:
+      - glpi
+      - victoriametrics
+    restart: unless-stopped
+    command: sh -c "pip install requests && python exporter.py"
+
+  # ===========================================
+  # 13. Nginx Reverse Proxy
+  # ===========================================
+  nginx-proxy:
+    image: nginx:alpine
+    container_name: nginx-proxy
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+    networks:
+      - zabbix-net
+    depends_on:
+      - zabbix-web
+      - glpi
+      - grafana
+      - reporting-portal
+    restart: unless-stopped
+
+  # ===========================================
+  # 14. Reporting Portal
+  # ===========================================
+  reporting-portal:
+    image: python:3.11-slim
+    container_name: reporting-portal
+    working_dir: /app
+    volumes:
+      - ./reporting-portal:/app:ro
+    networks:
+      - zabbix-net
+    restart: unless-stopped
+    command: python -m http.server 8080
+
+networks:
+  zabbix-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  glpi_mariadb_data:
+  glpi_data:
+  glpi_integration_data:
+  victoriametrics_data:
+  grafana_data:
+  vmagent_data:

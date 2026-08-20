@@ -1,0 +1,76 @@
+module:
+  name: uxMAX
+menu:
+  uxmax-configuration: 'UI 設定'
+  uxmax-user-preferences: マイ uxMAX
+tabs:
+  general: 一般
+form:
+  section:
+    dashboards: ダッシュボード
+    interface: UI の挙動
+    appearance: 外観
+    color-tags: タグカラー
+    syntax-highlighting: シンタックスハイライト
+  enable-dragging-of-modal-windows: モーダルウィンドウのドラッグを有効化
+  latest-show-disabled-items: Latest data に無効化されたアイテムを表示
+  hide-widget-header: 編集モード以外ではウィジェットのヘッダーを非表示
+  compact-dashboard: コンパクトダッシュボード
+  allow-user-override: ユーザーごとのタグカラールールを許可
+  custom-color-theme: カスタムカラーテーマ
+  body-background-color: ページの背景色
+  navigation-background-color: サイドバーの背景色
+  modal-window-minimal-width:
+    label: モーダルウィンドウの最小幅
+    button:
+      open: 開く
+  custom-font:
+    label: カスタムフォント
+    button:
+      add: 追加
+      remove: 削除
+    variant:
+      use-external-css: 外部 CSS を使用
+      upload-font-file: フォントファイルをアップロード
+      google-font-url: Google フォント URL
+    hint:
+      store-font-locally: フォントをローカルに保存
+      supported-formats: 'サポートされる形式: woff, woff2, ttf, otf, eot'
+  color-tags:
+    label: タグカラー
+    table:
+      match: マッチ
+      string: 文字列
+    button:
+      add: 追加
+      remove: 削除
+    match:
+      starts-with: 前方一致
+      contains: 含む
+      ends-with: 後方一致
+    value: 値
+  syntax-highlight:
+    label: シンタックスハイライト
+    js: JavaScript (script items, preprocessing)
+    expression: 式（トリガー、計算アイテム）
+  user:
+    section:
+      global-rules: グローバルなタグカラールール
+      my-overrides: 自分の上書き
+    override-colortags: 自分のタグカラールールを使用する
+    load-global: グローバル設定を読み込む
+    no-global-rules: グローバルルールは定義されていません。
+    collision-info: 'グローバルルールと同じ「マッチ + 文字列」の組み合わせを持つ行は、その色を上書きします。新しい「マッチ + 文字列」の組み合わせを持つ行はグローバルルールに追加されます。'
+  button:
+    update: 更新
+hints:
+  windrag: 'マウスでタイトルバーをドラッグしてモーダルダイアログを移動できるようにします。主にこの機能をネイティブにサポートしていない Zabbix 7.0 向けです — Zabbix 7.4 ではモーダルのドラッグが標準で利用できます。'
+  latest-show-disabled: 'Monitoring → Latest data に無効化されたアイテムも表示します。無効化されたアイテムの行はグレー表示され、Info 列に「D」アイコンが付きます。'
+  hide-widget-header: '「Show header」のチェックを外したウィジェットでは、ヘッダーが完全に非表示になります — マウスホバー時にも表示されません。ヘッダーはダッシュボードを編集モードに切り替えたときにのみ再表示されます。'
+  compact-dashboard: 'ウィジェット周囲の余白を取り除き、互いにぴったりと並べて表示します。情報量の多いダッシュボードで省スペース化でき、よりコンパクトな見た目になります。'
+  color-theme: 'ページおよび／またはサイドバーの背景色をカスタマイズします。複数の Zabbix インスタンスを一目で見分けたいときに便利です。'
+  modal-width: 'モーダルダイアログの最小幅をピクセル単位で設定します。デフォルトサイズではダイアログ内容に対して幅が狭すぎる場合に便利です。'
+  custom-font: "カスタムフォント（Google Fonts URL またはアップロードしたフォントファイル）を読み込み、Zabbix UI 全体に適用します。\nURL の例: https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap"
+  color-tags: 'UI 全体のタグがルールに従って色付けされ、一目で識別しやすくなります。'
+  syntax-highlight: 'エディター内の JavaScript スクリプト（script item、preprocessing）および Zabbix 式（トリガー、計算アイテム）のシンタックスハイライトを行います。'
+  allow-user-override: '有効にすると、ユーザーは My uxMAX で独自のタグカラールールを定義でき、それがグローバルルールの上に適用されます。無効にすると、グローバルルールのみが適用され、My uxMAX メニューはユーザーから非表示になります。'

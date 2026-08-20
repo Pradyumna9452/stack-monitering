@@ -1,0 +1,76 @@
+module:
+  name: uxMAX
+menu:
+  uxmax-configuration: 'Nastavenia UI'
+  uxmax-user-preferences: Moje uxMAX
+tabs:
+  general: Všeobecné
+form:
+  section:
+    dashboards: Dashboardy
+    interface: Správanie UI
+    appearance: Vzhľad
+    color-tags: Farebné štítky
+    syntax-highlighting: Zvýraznenie syntaxe
+  enable-dragging-of-modal-windows: Presuvateľné modálne okná
+  latest-show-disabled-items: Zobraziť zakázané položky v Latest data
+  hide-widget-header: Skryť hlavičku widgetu mimo režimu úprav
+  compact-dashboard: Kompaktný dashboard
+  allow-user-override: Povoliť vlastné pravidlá pre farebné štítky
+  custom-color-theme: Vlastná farebná téma
+  body-background-color: Farba pozadia stránky
+  navigation-background-color: Farba pozadia bočného menu
+  modal-window-minimal-width:
+    label: Minimálna šírka modálneho okna
+    button:
+      open: Otvoriť
+  custom-font:
+    label: Vlastné písmo
+    button:
+      add: Pridať
+      remove: Odstrániť
+    variant:
+      use-external-css: Použiť externé CSS
+      upload-font-file: Nahrať súbor písma
+      google-font-url: URL Google písma
+    hint:
+      store-font-locally: Uložiť písmo lokálne
+      supported-formats: 'Podporované formáty: woff, woff2, ttf, otf, eot'
+  color-tags:
+    label: Farebné štítky
+    table:
+      match: Zhoda
+      string: Reťazec
+    button:
+      add: Pridať
+      remove: Odstrániť
+    match:
+      starts-with: Začína na
+      contains: Obsahuje
+      ends-with: Končí na
+    value: Hodnota
+  syntax-highlight:
+    label: Zvýraznenie syntaxe
+    js: JavaScript (script items, preprocessing)
+    expression: Výrazy (triggery, kalkulované položky)
+  user:
+    section:
+      global-rules: Globálne pravidlá pre farebné štítky
+      my-overrides: Moje prepisy
+    override-colortags: Použiť vlastné pravidlá pre farby tagov
+    load-global: Načítať globálne nastavenie
+    no-global-rules: Žiadne globálne pravidlá nie sú definované.
+    collision-info: 'Riadok s rovnakou kombináciou Zhoda + Reťazec ako globálne pravidlo prepíše jeho farbu. Riadky s novými kombináciami Zhoda + Reťazec sa pridajú ku globálnym.'
+  button:
+    update: Aktualizovať
+hints:
+  windrag: 'Umožní presúvať modálne okná uchopením za záhlavie myšou. Určené hlavne pre Zabbix 7.0, ktorý túto funkciu natívne nemá — Zabbix 7.4 už presúvanie modálnych okien podporuje sám.'
+  latest-show-disabled: 'V Monitoring → Latest data budú viditeľné aj deaktivované položky. Riadky deaktivovaných položiek sú zobrazené sivo s ikonou ''D'' v stĺpci Info.'
+  hide-widget-header: 'Pri widgetoch s odškrtnutým „Show header" sa hlavička úplne skryje — nezobrazí sa ani po nabehnutí myšou. Hlavička sa objaví iba po prepnutí dashboardu do režimu úprav.'
+  compact-dashboard: 'Odstráni medzery okolo widgetov, takže priliehajú tesne k sebe. Šetrí miesto na hustých dashboardoch a pôsobí kompaktnejším dojmom.'
+  color-theme: 'Vlastná farba pozadia stránky a/alebo bočného menu. Užitočné pre vizuálne rozlíšenie viacerých Zabbix inštancií na prvý pohľad.'
+  modal-width: 'Nastaví minimálnu šírku modálnych okien v pixeloch. Užitočné keď je predvolená veľkosť pre obsah dialógu príliš úzka.'
+  custom-font: "Načíta vlastné písmo (cez URL Google Fontu alebo nahraný súbor) a aplikuje ho v celom Zabbix UI.\nPríklad URL: https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap"
+  color-tags: 'Tagy v celom UI sú zafarbené podľa vašich pravidiel — jednoduchšia rýchla orientácia.'
+  syntax-highlight: 'Farebné zvýraznenie syntaxe pre JavaScript skripty (script item, preprocessing) a Zabbix výrazy (triggery, kalkulované položky) v editoroch.'
+  allow-user-override: 'Keď je zapnuté, používatelia si môžu v My uxMAX definovať vlastné pravidlá pre farby tagov, ktoré sa pridajú ku globálnym. Keď je vypnuté, platia iba globálne pravidlá a menu My uxMAX sa používateľom skryje.'

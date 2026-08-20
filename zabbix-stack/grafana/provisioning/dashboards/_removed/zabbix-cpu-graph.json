@@ -1,0 +1,265 @@
+{
+ "annotations": {
+  "list": []
+ },
+ "description": "CPU utilization over time for selected Zabbix hosts (data via native connector → VictoriaMetrics)",
+ "editable": true,
+ "graphTooltip": 1,
+ "panels": [
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "victoriametrics"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "color": {
+      "mode": "palette-classic"
+     },
+     "custom": {
+      "axisCenteredZero": false,
+      "axisColorMode": "text",
+      "axisPlacement": "auto",
+      "drawStyle": "line",
+      "fillOpacity": 15,
+      "gradientMode": "opacity",
+      "lineInterpolation": "smooth",
+      "lineWidth": 2,
+      "pointSize": 5,
+      "showPoints": "never",
+      "spanNulls": true,
+      "thresholdsStyle": {
+       "mode": "line+area"
+      }
+     },
+     "min": 0,
+     "max": 100,
+     "unit": "percent",
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "yellow",
+        "value": 70
+       },
+       {
+        "color": "red",
+        "value": 90
+       }
+      ]
+     }
+    },
+    "overrides": []
+   },
+   "gridPos": {
+    "h": 12,
+    "w": 24,
+    "x": 0,
+    "y": 0
+   },
+   "id": 1,
+   "options": {
+    "legend": {
+     "calcs": [
+      "last",
+      "mean",
+      "max"
+     ],
+     "displayMode": "table",
+     "placement": "right",
+     "showLegend": true
+    },
+    "tooltip": {
+     "mode": "multi",
+     "sort": "desc"
+    }
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "victoriametrics"
+     },
+     "expr": "{__name__=\"CPU utilization\", host=~\"$host\"}",
+     "legendFormat": "{{host}}",
+     "refId": "A"
+    }
+   ],
+   "title": "CPU Utilization - $host",
+   "type": "timeseries"
+  },
+  {
+   "datasource": {
+    "type": "prometheus",
+    "uid": "victoriametrics"
+   },
+   "fieldConfig": {
+    "defaults": {
+     "color": {
+      "mode": "thresholds"
+     },
+     "custom": {
+      "align": "center",
+      "displayMode": "color-text",
+      "filterable": true,
+      "inspect": true
+     },
+     "decimals": 2,
+     "max": 100,
+     "min": 0,
+     "unit": "percent",
+     "thresholds": {
+      "mode": "absolute",
+      "steps": [
+       {
+        "color": "green",
+        "value": null
+       },
+       {
+        "color": "yellow",
+        "value": 70
+       },
+       {
+        "color": "red",
+        "value": 90
+       }
+      ]
+     }
+    },
+    "overrides": [
+     {
+      "matcher": {
+       "id": "byName",
+       "options": "Host"
+      },
+      "properties": [
+       {
+        "id": "custom.displayMode",
+        "options": "auto"
+       }
+      ]
+     }
+    ]
+   },
+   "gridPos": {
+    "h": 10,
+    "w": 24,
+    "x": 0,
+    "y": 12
+   },
+   "id": 2,
+   "options": {
+    "cellHeight": "sm",
+    "footer": {
+     "fields": "",
+     "reducer": [
+      "sum"
+     ],
+     "show": false
+    },
+    "showHeader": true,
+    "sortBy": [
+     {
+      "desc": true,
+      "displayName": "Current CPU %"
+     }
+    ]
+   },
+   "targets": [
+    {
+     "datasource": {
+      "type": "prometheus",
+      "uid": "victoriametrics"
+     },
+     "expr": "{__name__=\"CPU utilization\", host=~\"$host\"}",
+     "legendFormat": "{{host}}",
+     "refId": "A"
+    }
+   ],
+   "title": "CPU Performance Inventory (Excel Style)",
+   "transformations": [
+    {
+     "id": "reduce",
+     "options": {
+      "includeTimeField": false,
+      "mode": "seriesToRows",
+      "reducers": [
+       "lastNotNull",
+       "mean",
+       "min",
+       "max"
+      ]
+     }
+    },
+    {
+     "id": "organize",
+     "options": {
+      "excludeByName": {},
+      "indexByName": {
+       "Field": 0,
+       "lastNotNull": 1,
+       "mean": 2,
+       "min": 3,
+       "max": 4
+      },
+      "renameByName": {
+       "Field": "Host",
+       "lastNotNull": "Current CPU %",
+       "max": "Peak CPU %",
+       "mean": "Avg CPU %",
+       "min": "Min CPU %"
+      }
+     }
+    }
+   ],
+   "type": "table"
+  }
+ ],
+ "refresh": "30s",
+ "schemaVersion": 38,
+ "tags": [
+  "zabbix",
+  "cpu"
+ ],
+ "templating": {
+  "list": [
+   {
+    "allValue": ".*",
+    "current": {},
+    "datasource": {
+     "type": "prometheus",
+     "uid": "victoriametrics"
+    },
+    "definition": "label_values({__name__=\"CPU utilization\"}, host)",
+    "description": "Hosts reporting CPU utilization, auto-discovered from VictoriaMetrics.",
+    "hide": 0,
+    "includeAll": true,
+    "label": "Host",
+    "multi": true,
+    "name": "host",
+    "options": [],
+    "query": {
+     "query": "label_values({__name__=\"CPU utilization\"}, host)",
+     "refId": "StandardVariableQuery"
+    },
+    "refresh": 2,
+    "regex": "/^(?!$).+/",
+    "skipUrlSync": false,
+    "sort": 1,
+    "type": "query"
+   }
+  ]
+ },
+ "time": {
+  "from": "now-6h",
+  "to": "now"
+ },
+ "timepicker": {},
+ "title": "Zabbix CPU Utilization",
+ "uid": "zabbix-cpu-graph",
+ "version": 1
+}

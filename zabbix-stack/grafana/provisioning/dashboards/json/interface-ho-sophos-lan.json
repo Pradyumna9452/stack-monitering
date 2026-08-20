@@ -1,0 +1,86 @@
+{
+  "uid": "iface-ho-sophos-lan",
+  "title": "Interface — HO Sophos lan (Traffic)",
+  "tags": ["network", "interface", "bandwidth"],
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "refresh": "30s",
+  "time": { "from": "now-6h", "to": "now" },
+  "templating": { "list": [] },
+  "annotations": { "list": [] },
+  "panels": [
+    {
+      "id": 1,
+      "type": "timeseries",
+      "title": "HO Sophos Internet Proxy FW — lan traffic (In / Out)",
+      "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+      "gridPos": { "h": 12, "w": 24, "x": 0, "y": 0 },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bps",
+          "color": { "mode": "palette-classic" },
+          "custom": {
+            "drawStyle": "line",
+            "lineInterpolation": "smooth",
+            "lineWidth": 2,
+            "fillOpacity": 18,
+            "gradientMode": "opacity",
+            "showPoints": "never",
+            "pointSize": 5,
+            "spanNulls": true,
+            "insertNulls": false,
+            "axisPlacement": "auto",
+            "axisColorMode": "text",
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "scaleDistribution": { "type": "linear" },
+            "stacking": { "mode": "none", "group": "A" },
+            "hideFrom": { "tooltip": false, "viz": false, "legend": false },
+            "thresholdsStyle": { "mode": "off" },
+            "barAlignment": 0
+          }
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byRegexp", "options": "/Out/" },
+            "properties": [
+              { "id": "custom.transform", "value": "negative-Y" },
+              { "id": "color", "value": { "mode": "fixed", "fixedColor": "blue" } }
+            ]
+          },
+          {
+            "matcher": { "id": "byRegexp", "options": "/In/" },
+            "properties": [
+              { "id": "color", "value": { "mode": "fixed", "fixedColor": "green" } }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "tooltip": { "mode": "multi", "sort": "desc" },
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "showLegend": true,
+          "calcs": ["lastNotNull", "max", "mean"]
+        }
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "last_over_time({__name__=\"Interface lan(): Bits received\", host=\"HO_SOPHOS_INTERNET_PROXY_FW1\"}[5m])",
+          "legendFormat": "In (received)"
+        },
+        {
+          "refId": "B",
+          "datasource": { "type": "prometheus", "uid": "victoriametrics" },
+          "expr": "last_over_time({__name__=\"Interface lan(): Bits sent\", host=\"HO_SOPHOS_INTERNET_PROXY_FW1\"}[5m])",
+          "legendFormat": "Out (sent)"
+        }
+      ]
+    }
+  ]
+}

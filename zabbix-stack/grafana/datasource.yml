@@ -1,0 +1,40 @@
+apiVersion: 1
+
+deleteDatasources:
+  - name: Zabbix
+    orgId: 1
+  - name: VictoriaMetrics
+    orgId: 1
+
+datasources:
+
+  - name: Zabbix
+    type: alexanderzobnin-zabbix-datasource
+    access: proxy
+    orgId: 1
+    uid: zabbix-ds
+    url: http://zabbix-web:8080/api_jsonrpc.php
+    isDefault: true
+    editable: true
+    jsonData:
+      authType: "token"
+      trends: true
+      trendsFrom: "7d"
+      trendsRange: "4d"
+      cacheTTL: "1h"
+      alerting: true
+      addThresholds: true
+    secureJsonData:
+      token: "${ZABBIX_API_TOKEN}"
+
+  - name: VictoriaMetrics
+    type: prometheus
+    access: proxy
+    orgId: 1
+    uid: victoriametrics
+    url: http://victoriametrics:8428
+    isDefault: false
+    editable: true
+    jsonData:
+      httpMethod: POST
+      timeInterval: "15s"

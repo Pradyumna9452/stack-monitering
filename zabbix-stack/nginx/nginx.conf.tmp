@@ -1,0 +1,21 @@
+        # Add this BEFORE the closing } of the server block
+        # GLPI Service Catalog
+        location /ServiceCatalog {
+            proxy_pass http://glpi/ServiceCatalog;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_connect_timeout 60s;
+            proxy_send_timeout 120s;
+            proxy_read_timeout 120s;
+            proxy_buffering off;
+        }
+        # GLPI MFA/Verify endpoint
+        location = /MFA/Verify {
+            proxy_pass http://glpi/MFA/Verify;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }

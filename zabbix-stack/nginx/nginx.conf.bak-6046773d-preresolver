@@ -1,0 +1,91 @@
+user nginx;
+worker_processes auto;
+error_log /var/log/nginx/error.log warn;
+pid /var/run/nginx.pid;
+
+events { worker_connections 1024; }
+
+http {
+    include /etc/nginx/mime.types;
+    default_type application/octet-stream;
+    sendfile on;
+    keepalive_timeout 65;
+    client_max_body_size 100M;
+
+    upstream zabbix_web { server zabbix-web:8080; }
+    upstream grafana { server grafana:3000; }
+    upstream victoriametrics { server victoriametrics:8428; }
+    upstream glpi { server glpi:80; }
+    upstream reporting_portal { server reporting-portal:5000; }
+
+    server {
+        listen 80;
+        return 301 https://$host$request_uri;
+    }
+
+    server {
+        listen 443 ssl http2;
+        ssl_certificate /etc/nginx/ssl/server.crt;
+        ssl_certificate_key /etc/nginx/ssl/server.key;
+        ssl_protocols TLSv1.2 TLSv1.3;
+
+        location = / { return 301 /zabbix/; }
+
+        location /zabbix/ {
+            proxy_pass http://zabbix_web/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+
+        location /grafana/ {
+            proxy_pass http://grafana/grafana/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_http_version 1.1;
+            proxy_set_header Upgrade $http_upgrade;
+            proxy_set_header Connection "upgrade";
+        }
+
+        location /vm/ {
+            proxy_pass http://victoriametrics/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location /glpi {
+            rewrite ^/glpi$ /glpi/ permanent;
+            rewrite ^/glpi/(.*)$ /$1 break;
+            proxy_pass http://glpi;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_redirect / /glpi/;
+        }
+
+        location ~ ^/(lib|css|css_compiled|js|pics|public|plugins|marketplace|front|ajax|install|vendor|inc|src|templates)/ {
+            proxy_pass http://glpi;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location ~ ^/[^/]+\.php$ {
+            proxy_pass http://glpi;
+            proxy_set_header Host $host;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location /reports/ {
+            proxy_pass http://reporting_portal/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+        }
+
+        location /health { return 200 "OK\n"; }
+    }
+}

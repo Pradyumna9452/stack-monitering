@@ -1,0 +1,2064 @@
+{
+  "uid": "ops-overview",
+  "title": "Operations Overview",
+  "tags": [
+    "zabbix",
+    "overview",
+    "noc"
+  ],
+  "schemaVersion": 39,
+  "editable": true,
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "refresh": "1m",
+  "templating": {
+    "list": [
+      {
+        "name": "site",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "victoriametrics"
+        },
+        "query": {
+          "query": "label_values(site)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
+        "includeAll": true,
+        "allValue": ".+",
+        "multi": true,
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
+        "sort": 1,
+        "label": "Site"
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "row",
+      "title": "Device Availability  (Up / Down)",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "collapsed": false
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Firewall Devices",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 1
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Firewall\", site=~\"$site\"}) == 1) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Firewall\", site=~\"$site\"}) == 1)) or vector(0)",
+          "legendFormat": "Up",
+          "instant": true
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Firewall\", site=~\"$site\"}) == 0) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Firewall\", site=~\"$site\"}) == 2)) or vector(0)",
+          "legendFormat": "Down",
+          "instant": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "textMode": "value_and_name",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "links": [
+            {
+              "title": "Open Firewall device list",
+              "url": "d/device-status/device-status?var-host_type=Firewall&${__url_time_range}",
+              "targetBlank": false
+            }
+          ],
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "red"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 3,
+      "type": "bargauge",
+      "title": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 0,
+        "y": 5
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Firewall\", site=~\"$site\"}) == 1) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Firewall\", site=~\"$site\"}) == 1)) or vector(0)",
+          "legendFormat": "Up",
+          "instant": true
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Firewall\", site=~\"$site\"}) == 0) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Firewall\", site=~\"$site\"}) == 2)) or vector(0)",
+          "legendFormat": "Down",
+          "instant": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "displayMode": "basic",
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "links": [
+            {
+              "title": "Open Firewall device list",
+              "url": "d/device-status/device-status?var-host_type=Firewall&${__url_time_range}",
+              "targetBlank": false
+            }
+          ],
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "red"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Switch Devices",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 1
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Switch\", site=~\"$site\"}) == 1) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Switch\", site=~\"$site\"}) == 1)) or vector(0)",
+          "legendFormat": "Up",
+          "instant": true
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Switch\", site=~\"$site\"}) == 0) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Switch\", site=~\"$site\"}) == 2)) or vector(0)",
+          "legendFormat": "Down",
+          "instant": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "textMode": "value_and_name",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "links": [
+            {
+              "title": "Open Switch device list",
+              "url": "d/device-status/device-status?var-host_type=Switch&${__url_time_range}",
+              "targetBlank": false
+            }
+          ],
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "red"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 5,
+      "type": "bargauge",
+      "title": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 6,
+        "y": 5
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Switch\", site=~\"$site\"}) == 1) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Switch\", site=~\"$site\"}) == 1)) or vector(0)",
+          "legendFormat": "Up",
+          "instant": true
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Switch\", site=~\"$site\"}) == 0) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Switch\", site=~\"$site\"}) == 2)) or vector(0)",
+          "legendFormat": "Down",
+          "instant": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "displayMode": "basic",
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "links": [
+            {
+              "title": "Open Switch device list",
+              "url": "d/device-status/device-status?var-host_type=Switch&${__url_time_range}",
+              "targetBlank": false
+            }
+          ],
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "red"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "Server Devices",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 1
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Server\", site=~\"$site\"}) == 1) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Server\", site=~\"$site\"}) == 1)) or vector(0)",
+          "legendFormat": "Up",
+          "instant": true
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Server\", site=~\"$site\"}) == 0) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Server\", site=~\"$site\"}) == 2)) or vector(0)",
+          "legendFormat": "Down",
+          "instant": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "textMode": "value_and_name",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "links": [
+            {
+              "title": "Open Server device list",
+              "url": "d/device-status/device-status?var-host_type=Server&${__url_time_range}",
+              "targetBlank": false
+            }
+          ],
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "red"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 7,
+      "type": "bargauge",
+      "title": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 12,
+        "y": 5
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Server\", site=~\"$site\"}) == 1) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Server\", site=~\"$site\"}) == 1)) or vector(0)",
+          "legendFormat": "Up",
+          "instant": true
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Server\", site=~\"$site\"}) == 0) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Server\", site=~\"$site\"}) == 2)) or vector(0)",
+          "legendFormat": "Down",
+          "instant": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "displayMode": "basic",
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "links": [
+            {
+              "title": "Open Server device list",
+              "url": "d/device-status/device-status?var-host_type=Server&${__url_time_range}",
+              "targetBlank": false
+            }
+          ],
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "red"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 8,
+      "type": "stat",
+      "title": "Storage Devices",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 1
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Storage\", site=~\"$site\"}) == 1) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Storage\", site=~\"$site\"}) == 1)) or vector(0)",
+          "legendFormat": "Up",
+          "instant": true
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Storage\", site=~\"$site\"}) == 0) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Storage\", site=~\"$site\"}) == 2)) or vector(0)",
+          "legendFormat": "Down",
+          "instant": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "textMode": "value_and_name",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "links": [
+            {
+              "title": "Open Storage device list",
+              "url": "d/device-status/device-status?var-host_type=Storage&${__url_time_range}",
+              "targetBlank": false
+            }
+          ],
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "red"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 9,
+      "type": "bargauge",
+      "title": "",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "victoriametrics"
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 6,
+        "x": 18,
+        "y": 5
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Storage\", site=~\"$site\"}) == 1) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Storage\", site=~\"$site\"}) == 1)) or vector(0)",
+          "legendFormat": "Up",
+          "instant": true
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "victoriametrics"
+          },
+          "expr": "count((max by(host) ({__name__=\"ICMP ping\", host_type=\"Storage\", site=~\"$site\"}) == 0) or (max by(host) ({__name__=\"Zabbix agent availability\", host_type=\"Storage\", site=~\"$site\"}) == 2)) or vector(0)",
+          "legendFormat": "Down",
+          "instant": true
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "displayMode": "basic",
+        "showUnfilled": true,
+        "valueMode": "color"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "min": 0,
+          "links": [
+            {
+              "title": "Open Storage device list",
+              "url": "d/device-status/device-status?var-host_type=Storage&${__url_time_range}",
+              "targetBlank": false
+            }
+          ],
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "red"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 10,
+      "type": "row",
+      "title": "Events Summary  (Active Problems by Severity)",
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "collapsed": false
+    },
+    {
+      "id": 11,
+      "type": "text",
+      "title": "",
+      "gridPos": {
+        "h": 1,
+        "w": 6,
+        "x": 0,
+        "y": 9
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "**Firewall Events**"
+      }
+    },
+    {
+      "id": 12,
+      "type": "stat",
+      "title": "Firewall Events",
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "zabbix"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 0,
+        "y": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Firewall/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              5
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Firewall/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              4
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Firewall/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              3
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "D",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Firewall/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              2
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "E",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Firewall/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              1
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "textMode": "value_and_name",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "noValue": "0",
+          "links": [
+            {
+              "title": "Open Firewall device list",
+              "url": "d/device-status/device-status?var-host_type=Firewall&${__url_time_range}",
+              "targetBlank": false
+            }
+          ],
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#97AAB3"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Disaster"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#E45959"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "High"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#E97659"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "C"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Average"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#FFA059"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "D"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Warning"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#FFC859"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "E"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Information"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#7499FF"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 13,
+      "type": "text",
+      "title": "",
+      "gridPos": {
+        "h": 1,
+        "w": 6,
+        "x": 6,
+        "y": 9
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "**Switch Events**"
+      }
+    },
+    {
+      "id": 14,
+      "type": "stat",
+      "title": "Switch Events",
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "zabbix"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 6,
+        "y": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Switches/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              5
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Switches/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              4
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Switches/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              3
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "D",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Switches/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              2
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "E",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Switches/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              1
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "textMode": "value_and_name",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "noValue": "0",
+          "links": [
+            {
+              "title": "Open Switch device list",
+              "url": "d/device-status/device-status?var-host_type=Switch&${__url_time_range}",
+              "targetBlank": false
+            }
+          ],
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#97AAB3"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Disaster"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#E45959"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "High"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#E97659"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "C"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Average"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#FFA059"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "D"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Warning"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#FFC859"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "E"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Information"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#7499FF"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 15,
+      "type": "text",
+      "title": "",
+      "gridPos": {
+        "h": 1,
+        "w": 6,
+        "x": 12,
+        "y": 9
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "**Server Events**"
+      }
+    },
+    {
+      "id": 16,
+      "type": "stat",
+      "title": "Server Events",
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "zabbix"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 12,
+        "y": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Servers/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              5
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Servers/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              4
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Servers/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              3
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "D",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Servers/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              2
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "E",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/Servers/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              1
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "textMode": "value_and_name",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "noValue": "0",
+          "links": [
+            {
+              "title": "Open Server device list",
+              "url": "d/device-status/device-status?var-host_type=Server&${__url_time_range}",
+              "targetBlank": false
+            }
+          ],
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#97AAB3"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Disaster"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#E45959"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "High"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#E97659"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "C"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Average"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#FFA059"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "D"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Warning"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#FFC859"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "E"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Information"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#7499FF"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": 17,
+      "type": "text",
+      "title": "",
+      "gridPos": {
+        "h": 1,
+        "w": 6,
+        "x": 18,
+        "y": 9
+      },
+      "options": {
+        "mode": "markdown",
+        "content": "**Storage Events**"
+      }
+    },
+    {
+      "id": 18,
+      "type": "stat",
+      "title": "Storage Events",
+      "datasource": {
+        "type": "alexanderzobnin-zabbix-datasource",
+        "uid": "zabbix"
+      },
+      "gridPos": {
+        "h": 5,
+        "w": 6,
+        "x": 18,
+        "y": 10
+      },
+      "targets": [
+        {
+          "refId": "A",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/[Ss]torage/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              5
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "B",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/[Ss]torage/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              4
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "C",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/[Ss]torage/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              3
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "D",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/[Ss]torage/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              2
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        },
+        {
+          "refId": "E",
+          "datasource": {
+            "type": "alexanderzobnin-zabbix-datasource",
+            "uid": "zabbix"
+          },
+          "queryType": "5",
+          "group": {
+            "filter": "/[Ss]torage/"
+          },
+          "host": {
+            "filter": ""
+          },
+          "application": {
+            "filter": ""
+          },
+          "item": {
+            "filter": ""
+          },
+          "trigger": {
+            "filter": ""
+          },
+          "options": {
+            "severities": [
+              1
+            ],
+            "minSeverity": 0,
+            "acknowledged": 2,
+            "hostsInMaintenance": false,
+            "sortProblems": "default",
+            "limit": 200,
+            "useTimeRange": false
+          }
+        }
+      ],
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "count"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "horizontal",
+        "textMode": "value_and_name",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "center"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "unit": "short",
+          "noValue": "0",
+          "links": [
+            {
+              "title": "Open Storage device list",
+              "url": "d/device-status/device-status?var-host_type=Storage&${__url_time_range}",
+              "targetBlank": false
+            }
+          ],
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#97AAB3"
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "A"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Disaster"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#E45959"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "B"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "High"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#E97659"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "C"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Average"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#FFA059"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "D"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Warning"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#FFC859"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byFrameRefID",
+              "options": "E"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Information"
+              },
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#7499FF"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

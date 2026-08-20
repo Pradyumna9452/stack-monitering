@@ -1,0 +1,76 @@
+module:
+    name: 'uxMAX'
+menu:
+    uxmax-configuration: 'UI Settings'
+    uxmax-user-preferences: 'My uxMAX'
+tabs:
+    general: 'General'
+form:
+    section:
+        dashboards: 'Dashboards'
+        interface: 'UI behavior'
+        appearance: 'Appearance'
+        color-tags: 'Color tags'
+        syntax-highlighting: 'Syntax highlighting'
+    enable-dragging-of-modal-windows: 'Draggable modal windows'
+    latest-show-disabled-items: 'Show disabled items in Latest data'
+    hide-widget-header: 'Hide widget header outside edit mode'
+    compact-dashboard: 'Compact dashboard'
+    allow-user-override: 'Allow per-user color tag rules'
+    custom-color-theme: 'Custom color theme'
+    body-background-color: 'Page background color'
+    navigation-background-color: 'Sidebar background color'
+    modal-window-minimal-width:
+        label: 'Minimum modal window width'
+        button:
+            open: 'Open'
+    custom-font:
+        label: 'Custom font'
+        button:
+            add: 'Add'
+            remove: 'Remove'
+        variant:
+            use-external-css: 'Use external CSS'
+            upload-font-file: 'Upload font file'
+            google-font-url: 'Google font URL'
+        hint:
+            store-font-locally: 'Store font locally'
+            supported-formats: 'Supported formats: woff, woff2, ttf, otf, eot'
+    color-tags:
+        label: 'Color tags'
+        table:
+            match: 'Match'
+            string: 'String'
+        button:
+            add: 'Add'
+            remove: 'Remove'
+        match:
+            starts-with: 'Starts with'
+            contains: 'Contains'
+            ends-with: 'Ends with'
+        value: 'Value'
+    syntax-highlight:
+        label: 'Syntax highlighting'
+        js: 'JavaScript (script items, preprocessing)'
+        expression: 'Expressions (triggers, calculated items)'
+    user:
+        section:
+            global-rules: 'Global color tag rules'
+            my-overrides: 'My overrides'
+        override-colortags: 'Use my own color tag rules'
+        load-global: 'Load global settings'
+        no-global-rules: 'No global rules defined.'
+        collision-info: 'A row with the same Match + String as a global rule replaces its color. Rows with new Match + String combinations are added on top of the global rules.'
+    button:
+        update: 'Update'
+hints:
+    windrag: 'Allows dragging modal dialogs by grabbing their title bar with the mouse. Intended mainly for Zabbix 7.0, which does not support this natively — Zabbix 7.4 already provides modal dragging out of the box.'
+    latest-show-disabled: 'Shows disabled items in Monitoring → Latest data. Rows for disabled items appear greyed out with a ''D'' badge in the Info column.'
+    hide-widget-header: 'For widgets with ''Show header'' unchecked, hides the header completely — it is not shown even on mouse hover. The header reappears only when the dashboard is switched to edit mode.'
+    compact-dashboard: 'Removes the padding around widgets so they sit flush against each other. Saves space on dense dashboards and gives a more compact look.'
+    color-theme: 'Custom background color for the page body and/or the sidebar. Useful for visually distinguishing multiple Zabbix instances at a glance.'
+    modal-width: 'Sets a minimum pixel width for modal dialogs. Useful when the default size is too narrow for the dialog''s content.'
+    custom-font: "Loads a custom font (via Google Fonts URL or an uploaded font file) and applies it across the Zabbix UI.\nExample URL: https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;700;900&display=swap"
+    color-tags: 'Tags throughout the UI are coloured according to your rules, making them easier to scan at a glance.'
+    syntax-highlight: 'Syntax highlighting for JavaScript scripts (script items, preprocessing) and Zabbix expressions (triggers, calculated items) in editors.'
+    allow-user-override: 'When enabled, users may define their own color tag rules in My uxMAX, layered on top of the global ones. When disabled, only the global rules apply and the My uxMAX menu is hidden from users.'
